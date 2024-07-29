@@ -12,7 +12,8 @@ on:
     - cron: "40 */2 * * *"
 
 permissions:
-  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   update:
