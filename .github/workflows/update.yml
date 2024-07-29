@@ -1,0 +1,131 @@
+name: Update
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - registry.yaml
+      - .github/workflows/**
+  schedule:
+    - cron: "40 */2 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Prepare output dir
+        run: |
+          mkdir -p build/htdocs
+          cp -p index.html build/htdocs/
+
+      - name: Generate registry.json
+        uses: grafana/k6registry@v0.1.5
+        with:
+          in: "registry.yaml"
+          out: "build/htdocs/registry.json"
+          lint: "false"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          XDG_CACHE_HOME: ${{ github.workspace }}/build/cache
+
+      - name: Generate catalog-registered.json
+        uses: grafana/k6registry@v0.1.5
+        with:
+          in: "registry.yaml"
+          out: "build/htdocs/catalog-registered.json"
+          filter: >-
+            map(
+              select((.repo.archived|not) and .repo.versions and .repo.license and (.module == "go.k6.io/k6" or (.repo.topics and (.repo.topics | contains(["xk6"]))))) | 
+              { (.imports // .outputs | first // "k6"): {module, versions: .repo.versions} }
+            ) |
+            add
+          lint: "false"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          XDG_CACHE_HOME: ${{ github.workspace }}/build/cache
+
+      - name: Generate catalog-official.json
+        uses: grafana/k6registry@v0.1.5
+        with:
+          in: "registry.yaml"
+          out: "build/htdocs/catalog-official.json"
+          filter: >-
+            map(
+              select(.official or .module == "go.k6.io/k6") |
+              select((.repo.archived|not) and .repo.versions and .repo.license and (.module == "go.k6.io/k6" or (.repo.topics and (.repo.topics | contains(["xk6"]))))) | 
+              { (.imports // .outputs | first // "k6"): {module, versions: .repo.versions} }
+            ) |
+            add
+          lint: "false"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          XDG_CACHE_HOME: ${{ github.workspace }}/build/cache
+
+      - name: Generate catalog-cloud.json
+        uses: grafana/k6registry@v0.1.5
+        with:
+          in: "registry.yaml"
+          out: "build/htdocs/catalog-cloud.json"
+          filter: >-
+            map(
+              select(.cloud or .module == "go.k6.io/k6") |
+              select((.repo.archived|not) and .repo.versions and .repo.license and (.module == "go.k6.io/k6" or (.repo.topics and (.repo.topics | contains(["xk6"]))))) | 
+              { (.imports // .outputs | first // "k6"): {module, versions: .repo.versions} }
+            ) |
+            add
+          lint: "false"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          XDG_CACHE_HOME: ${{ github.workspace }}/build/cache
+
+      - name: Generate extensions.json
+        uses: grafana/k6registry@v0.1.5
+        with:
+          in: "registry.yaml"
+          out: "build/htdocs/extensions.json"
+          filter: >-
+            map(
+              select(.module != "go.k6.io/k6") | 
+              select((.repo.archived|not) and .repo.versions and .repo.license and .repo.topics and (.repo.topics | contains(["xk6"]))) | 
+              {
+                name:.repo.name,
+                owner:.repo.owner,
+                stars: if .repo.stars then .repo.stars else 0 end,
+                url: .repo.url,
+                description,
+                module,
+                license: .repo.license,
+                official: if .official then true else false end,
+                cloud: if .cloud then true else false end
+              }
+            ) |
+            sort_by(.name)
+          lint: "false"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          XDG_CACHE_HOME: ${{ github.workspace }}/build/cache
+
+      - name: Setup Pages
+        if: ${{ github.ref_name == 'main' }}
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        if: ${{ github.ref_name == 'main' }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "build/htdocs"
+      - name: Deploy to GitHub Pages
+        if: ${{ github.ref_name == 'main' }}
+        id: deployment
+        uses: actions/deploy-pages@v4
