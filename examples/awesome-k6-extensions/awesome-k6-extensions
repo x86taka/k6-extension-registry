@@ -1,0 +1,48 @@
+#!/bin/bash
+
+appname=awesome-k6-extensions
+
+TEMP=$(getopt -o 'n:h' --long 'stars:,help' -n $appname -- "$@")
+
+stars=15
+
+usage() {
+    cat >&2 <<EOF
+Create awesome k6 extension list based on registry.
+
+Usage:
+  $appname [flags]
+
+Flags:
+  -n, --stars num   minimum number of stars for community extensions (default $stars)
+  -h, --help        print usage
+EOF
+}
+
+if [ $? -ne 0 ]; then
+	exit 1
+fi
+
+eval set -- "$TEMP"
+unset TEMP
+
+while true; do
+  case "$1" in
+    '-n'|'--stars')
+      stars=$2
+      shift 2
+      continue
+    ;;
+    '-h'|'--help')
+      usage
+      exit 0
+    ;;
+    '--')
+      shift
+      break
+    ;;
+  esac
+done
+
+curl -s  https://grafana.github.io/k6-extension-registry/registry.json | 
+ jq --argjson stars $stars -r -f awesome-k6-extensions.jq
