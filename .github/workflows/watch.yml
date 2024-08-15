@@ -18,6 +18,7 @@ on:
     - cron: "40 */2 * * *"
 
 permissions:
+  actions: write
   pages: write
   id-token: write
 
@@ -101,9 +102,9 @@ jobs:
       - name: k6-extension-catalog
         continue-on-error: true
         run: |
-          gh workflow run -R grafana/k6-extension-catalog extension-registry-changed
+          gh workflow run -r main -R grafana/k6-extension-catalog extension-registry-changed
 
       - name: k6-extension-list
         continue-on-error: true
         run: |
-          gh workflow run -R grafana/k6-extension-list extension-registry-changed
+          gh workflow run -r main -R grafana/k6-extension-list extension-registry-changed
