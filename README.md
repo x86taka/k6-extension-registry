@@ -4,20 +4,13 @@ The k6 extension registry source is a YAML file ([registry.yaml](registry.yaml))
 
 An up-to-date version of the k6 extension registry is available at https://grafana.github.io/k6-extension-registry/registry.json
 
-In addition to the extension registry, the following k6 extension catalogs are automatically kept up-to-date:
-
-- [catalog-registered.json](https://grafana.github.io/k6-extension-registry/catalog-registered.json) contains all registered extensions
-- [catalog-official.json](https://grafana.github.io/k6-extension-registry/catalog-official.json) contains officially supported extensions (`official` flag is true)
-- [catalog-cloud.json](https://grafana.github.io/k6-extension-registry/catalog-cloud.json) contains extensions available in the cloud (`cloud` flag is true)
-
-
-The [extensions.json](https://grafana.github.io/k6-extension-registry/extensions.json) is also kept up-to-date for documentation purposes. This is a simplified version of [registry.json](https://grafana.github.io/k6-extension-registry/registry.json) with a structure similar to the [legacy extensions.json](https://github.com/grafana/k6-docs/blob/main/src/data/doc-extensions/extensions.json).
+If the [registry.json](https://grafana.github.io/k6-extension-registry/registry.json) changes, the [watch](https://github.com/grafana/k6-extension-registry/actions/workflows/watch.yml) workflow triggers the execution of external GitHub workflows (for example, the `extension-registry-changed` workflow of the [grafana/k6-extension-catalog](https://github.com/grafana/k6-extension-catalog) repository, which is responsible for keeping the extension catalogs up-to-date)
 
 ## Contributing
 
-To contribute, you need to modify the `registry.yaml` file and then open a pull request. The [Update](https://github.com/grafana/k6-extension-registry/actions/workflows/update.yml) workflow will automatically validate the `registry.yaml` file and, after successful validation, generate the `registry.json` file.
+To contribute, you need to modify the `registry.yaml` file and then open a pull request. The [watch](https://github.com/grafana/k6-extension-registry/actions/workflows/watch.yml) workflow will automatically validate the `registry.yaml` file and, after successful validation, generate the `registry.json` file.
 
-After the pull request is merged, the new extension registry (and extension catalogs) will be automatically deployed to GitHub Pages.
+After the pull request is merged, the new extension registry will be automatically deployed to GitHub Pages.
 
 ## Registry Validation
 

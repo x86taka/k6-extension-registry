@@ -1,0 +1,107 @@
+name: watch
+
+env:
+  BASE_URL: "https://grafana.github.io/k6-extension-registry"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    paths:
+      - registry.yaml
+      - .github/workflows/**
+  schedule:
+    - cron: "40 */2 * * *"
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      XDG_CACHE_HOME: ${{ github.workspace }}/build/cache
+      HTDOCS_DIR: ${{ github.workspace }}/build/htdocs
+    outputs:
+      changed: ${{ steps.registry.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Prepare
+        run: |
+          mkdir -p ${{ env.HTDOCS_DIR }}
+          cp -p index.html ${{ env.HTDOCS_DIR }}
+
+      - name: registry.json
+        id: registry
+        uses: grafana/k6registry@v0.1.9
+        with:
+          in: "registry.yaml"
+          out: "${{ env.HTDOCS_DIR }}/registry.json"
+          lint: "true"
+          ref: "${{ env.BASE_URL }}/registry.json"
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
+        with:
+          path: ${{ env.HTDOCS_DIR }}
+          name: "htdocs"
+          overwrite: true
+
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+      - generate
+    if: ${{ github.ref_name == 'main' && needs.generate.outputs.changed == 'true' }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HTDOCS_DIR: ${{ github.workspace }}/htdocs
+    steps:
+      - name: Prepare
+        run: |
+          mkdir -p ${{ env.HTDOCS_DIR }}
+
+      - name: Download
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ env.HTDOCS_DIR }}
+          name: "htdocs"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.HTDOCS_DIR }}
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+
+  notify:
+    runs-on: ubuntu-latest
+    needs:
+      - generate
+      - publish
+    if: ${{ github.ref_name == 'main' && needs.generate.outputs.changed == 'true' }}
+    steps:
+      - name: k6-extension-catalog
+        continue-on-error: true
+        run: |
+          gh workflow run -R grafana/k6-extension-catalog extension-registry-changed
+
+      - name: k6-extension-list
+        continue-on-error: true
+        run: |
+          gh workflow run -R grafana/k6-extension-list extension-registry-changed
