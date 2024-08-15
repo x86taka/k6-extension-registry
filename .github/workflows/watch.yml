@@ -95,6 +95,8 @@ jobs:
       - generate
       - publish
     if: ${{ github.ref_name == 'main' && needs.generate.outputs.changed == 'true' }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: k6-extension-catalog
         continue-on-error: true
