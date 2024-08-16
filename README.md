@@ -62,41 +62,34 @@ The JavaScript module names implemented by the extension can be specified in the
 
 The output names implemented by the extension can be specified in the `outputs` property. An extension can register multiple output names, so this is an array property.
 
-### Cloud
+### Tier
 
-The `true` value of the `cloud` flag indicates that the extension is also available in the Grafana k6 cloud. The use of certain extensions is not supported in a cloud environment. There may be a technological reason for this, or the extension's functionality is meaningless in the cloud.
+Extensions can be classified according to who maintains the extension. This usually also specifies who the user can get support from.
 
-### Official
+The `tier` property refers to the maintainer of the extension.
 
-The `true` value of the `official` flag indicates that the extension is officially supported by Grafana. Extensions owned by the `grafana` GitHub organization are not officially supported by Grafana by default. There are several k6 extensions owned by the `grafana` GitHub organization, which were created for experimental or example purposes only. The `official` flag is needed so that officially supported extensions can be distinguished from them.
+Possible values:
 
-### Example registry
+  - **official**: Extensions owned, maintained, and designated by Grafana as "official"
+  - **partner**: Extensions written, maintained, validated, and published by third-party companies against their own projects.
+  - **community**: Extensions are listed on the Registry by individual maintainers, groups of maintainers, or other members of the k6 community.
 
-```yaml file=example.yaml
-- module: github.com/grafana/xk6-dashboard
-  description: Web-based metrics dashboard for k6
-  outputs:
-    - dashboard
-  official: true
+Extensions owned by the `grafana` GitHub organization are not officially supported by Grafana by default. There are several k6 extensions owned by the `grafana` GitHub organization, which were created for experimental or example purposes only. The `official` tier value is needed so that officially supported extensions can be distinguished from them.
 
-- module: github.com/grafana/xk6-sql
-  description: Load test SQL Servers
-  imports:
-    - k6/x/sql
-  cloud: true
-  official: true
+If it is missing from the registry source, it will be set with the default `community` value during generation.
 
-- module: github.com/grafana/xk6-distruptor
-  description: Inject faults to test
-  imports:
-    - k6/x/distruptor
-  official: true
+### Product
 
-- module: github.com/szkiba/xk6-faker
-  description: Generate random fake data
-  imports:
-    - k6/x/faker
-```
+The `product` property contains the names of the k6 products in which the extension is available.
+
+Some extensions are not available in all k6 products. This may be for a technological or business reason, or the functionality of the extension may not make sense in the given product.
+
+Possible values:
+
+  - **oss**: Extensions are available in *k6 OSS*
+  - **cloud**: Extensions are available in *Grafana Cloud k6*
+
+If the property is missing or empty in the source of the registry, it means that the extension is only available in the *k6 OSS* product. In this case, the registry will be filled in accordingly during generation.
 
 ### Repository Metadata
 
@@ -143,3 +136,348 @@ The `versions` property contains the list of supported versions. Versions are ta
 The `true` value of the `archived` flag indicates that the repository is archived, read only.
 
 If a repository is archived, it usually means that the owner has no intention of maintaining it. Such extensions should be removed from the registry.
+
+### Example registry
+
+**Example registry source**
+
+```yaml
+- module: github.com/grafana/xk6-dashboard
+  description: Web-based metrics dashboard for k6
+  outputs:
+    - dashboard
+  tier: official
+
+- module: github.com/grafana/xk6-sql
+  description: Load test SQL Servers
+  imports:
+    - k6/x/sql
+  tier: official
+  product: ["cloud", "oss"]
+
+- module: github.com/grafana/xk6-disruptor
+  description: Inject faults to test
+  imports:
+    - k6/x/disruptor
+  tier: official
+
+- module: github.com/szkiba/xk6-faker
+  description: Generate random fake data
+  imports:
+    - k6/x/faker
+```
+
+<details>
+<summary><b>Example registry</b></summary>
+
+Registry generated from the source above.
+
+```json file=docs/example.json
+[
+  {
+    "description": "Web-based metrics dashboard for k6",
+    "module": "github.com/grafana/xk6-dashboard",
+    "outputs": [
+      "dashboard"
+    ],
+    "product": [
+      "oss"
+    ],
+    "repo": {
+      "description": "A k6 extension that makes k6 metrics available on a web-based dashboard.",
+      "homepage": "https://github.com/grafana/xk6-dashboard",
+      "license": "AGPL-3.0",
+      "name": "xk6-dashboard",
+      "owner": "grafana",
+      "public": true,
+      "stars": 320,
+      "topics": [
+        "xk6",
+        "xk6-official",
+        "xk6-output-dashboard"
+      ],
+      "url": "https://github.com/grafana/xk6-dashboard",
+      "versions": [
+        "v0.7.5",
+        "v0.7.4",
+        "v0.7.3",
+        "v0.7.3-alpha.1",
+        "v0.7.2",
+        "v0.7.1",
+        "v0.7.0",
+        "v0.7.0-apha.3",
+        "v0.7.0-alpha.5",
+        "v0.7.0-alpha.4",
+        "v0.7.0-alpha.3",
+        "v0.7.0-alpha.2",
+        "v0.7.0-alpha.1",
+        "v0.6.1",
+        "v0.6.0",
+        "v0.5.5",
+        "v0.5.4",
+        "v0.5.3",
+        "v0.5.2",
+        "v0.5.1",
+        "v0.5.0",
+        "v0.4.4",
+        "v0.4.3",
+        "v0.4.2",
+        "v0.4.1",
+        "v0.4.0",
+        "v0.3.2",
+        "v0.3.1",
+        "v0.3.0",
+        "v0.2.0",
+        "v0.1.3",
+        "v0.1.2",
+        "v0.1.1",
+        "v0.1.0"
+      ]
+    },
+    "tier": "official"
+  },
+  {
+    "description": "Load test SQL Servers",
+    "imports": [
+      "k6/x/sql"
+    ],
+    "module": "github.com/grafana/xk6-sql",
+    "product": [
+      "cloud",
+      "oss"
+    ],
+    "repo": {
+      "description": "k6 extension to load test RDBMSs (PostgreSQL, MySQL, MS SQL and SQLite3)",
+      "homepage": "https://github.com/grafana/xk6-sql",
+      "license": "Apache-2.0",
+      "name": "xk6-sql",
+      "owner": "grafana",
+      "public": true,
+      "stars": 102,
+      "topics": [
+        "k6",
+        "sql",
+        "xk6"
+      ],
+      "url": "https://github.com/grafana/xk6-sql",
+      "versions": [
+        "v0.4.0",
+        "v0.3.0",
+        "v0.2.1",
+        "v0.2.0",
+        "v0.1.1",
+        "v0.1.0",
+        "v0.0.1"
+      ]
+    },
+    "tier": "official"
+  },
+  {
+    "description": "Inject faults to test",
+    "imports": [
+      "k6/x/disruptor"
+    ],
+    "module": "github.com/grafana/xk6-disruptor",
+    "product": [
+      "oss"
+    ],
+    "repo": {
+      "description": "Extension for injecting faults into k6 tests",
+      "homepage": "https://k6.io/docs/javascript-api/xk6-disruptor/",
+      "license": "AGPL-3.0",
+      "name": "xk6-disruptor",
+      "owner": "grafana",
+      "public": true,
+      "stars": 87,
+      "topics": [
+        "chaos-engineering",
+        "fault-injection",
+        "k6",
+        "testing",
+        "xk6"
+      ],
+      "url": "https://github.com/grafana/xk6-disruptor",
+      "versions": [
+        "v0.3.11",
+        "v0.3.10",
+        "v0.3.9",
+        "v0.3.8",
+        "v0.3.7",
+        "v0.3.6",
+        "v0.3.5",
+        "v0.3.5-rc2",
+        "v0.3.5-rc1",
+        "v0.3.4",
+        "v0.3.3",
+        "v0.3.2",
+        "v0.3.1",
+        "v0.3.0",
+        "v0.2.1",
+        "v0.2.0",
+        "v0.1.3",
+        "v0.1.2",
+        "v0.1.1",
+        "v0.1.0"
+      ]
+    },
+    "tier": "official"
+  },
+  {
+    "description": "Generate random fake data",
+    "imports": [
+      "k6/x/faker"
+    ],
+    "module": "github.com/szkiba/xk6-faker",
+    "product": [
+      "oss"
+    ],
+    "repo": {
+      "description": "Random fake data generator for k6.",
+      "homepage": "http://ivan.szkiba.hu/xk6-faker/",
+      "license": "AGPL-3.0",
+      "name": "xk6-faker",
+      "owner": "szkiba",
+      "public": true,
+      "stars": 49,
+      "topics": [
+        "xk6",
+        "xk6-javascript-k6-x-faker"
+      ],
+      "url": "https://github.com/szkiba/xk6-faker",
+      "versions": [
+        "v0.3.0",
+        "v0.3.0-alpha.1",
+        "v0.2.2",
+        "v0.2.1",
+        "v0.2.0",
+        "v0.1.0"
+      ]
+    },
+    "tier": "community"
+  },
+  {
+    "description": "A modern load testing tool, using Go and JavaScript",
+    "module": "go.k6.io/k6",
+    "product": [
+      "cloud",
+      "oss"
+    ],
+    "repo": {
+      "description": "A modern load testing tool, using Go and JavaScript - https://k6.io",
+      "homepage": "https://github.com/grafana/k6",
+      "license": "AGPL-3.0",
+      "name": "k6",
+      "owner": "grafana",
+      "public": true,
+      "stars": 24184,
+      "topics": [
+        "es6",
+        "go",
+        "golang",
+        "hacktoberfest",
+        "javascript",
+        "load-generator",
+        "load-testing",
+        "performance"
+      ],
+      "url": "https://github.com/grafana/k6",
+      "versions": [
+        "v0.53.0",
+        "v0.52.0",
+        "v0.51.0",
+        "v0.50.0",
+        "v0.49.0",
+        "v0.48.0",
+        "v0.47.0",
+        "v0.46.0",
+        "v0.45.1",
+        "v0.45.0",
+        "v0.44.1",
+        "v0.44.0",
+        "v0.43.1",
+        "v0.43.0",
+        "v0.42.0",
+        "v0.41.0",
+        "v0.40.0",
+        "v0.39.0",
+        "v0.38.3",
+        "v0.38.2",
+        "v0.38.1",
+        "v0.38.0",
+        "v0.37.0",
+        "v0.36.0",
+        "v0.35.0",
+        "v0.34.1",
+        "v0.34.0",
+        "v0.33.0",
+        "v0.32.0",
+        "v0.31.1",
+        "v0.31.0",
+        "v0.30.0",
+        "v0.29.0",
+        "v0.28.0",
+        "v0.27.1",
+        "v0.27.0",
+        "v0.26.2",
+        "v0.26.1",
+        "v0.26.0",
+        "v0.25.1",
+        "v0.25.0",
+        "v0.24.0",
+        "v0.23.1",
+        "v0.23.0",
+        "v0.22.1",
+        "v0.22.0",
+        "v0.21.1",
+        "v0.21.0",
+        "v0.20.0",
+        "v0.19.0",
+        "v0.18.2",
+        "v0.18.1",
+        "v0.18.0",
+        "v0.17.2",
+        "v0.17.1",
+        "v0.17.0",
+        "v0.16.0",
+        "v0.15.0",
+        "v0.14.0",
+        "v0.13.0",
+        "v0.12.2",
+        "v0.12.1",
+        "v0.11.0",
+        "v0.10.0",
+        "v0.9.3",
+        "v0.9.2",
+        "v0.9.1",
+        "v0.9.0",
+        "v0.8.5",
+        "v0.8.4",
+        "v0.8.3",
+        "v0.8.2",
+        "v0.8.1",
+        "v0.8.0",
+        "v0.7.0",
+        "v0.6.0",
+        "v0.5.2",
+        "v0.5.1",
+        "v0.5.0",
+        "v0.4.5",
+        "v0.4.4",
+        "v0.4.3",
+        "v0.4.2",
+        "v0.4.1",
+        "v0.4.0",
+        "v0.3.0",
+        "v0.2.1",
+        "v0.2.0",
+        "v0.0.2",
+        "v0.0.1"
+      ]
+    },
+    "tier": "official"
+  }
+]
+```
+
+</details>
+
