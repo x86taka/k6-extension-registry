@@ -4,7 +4,7 @@ The k6 extension registry source is a YAML file ([registry.yaml](registry.yaml))
 
 An up-to-date version of the k6 extension registry is available at https://grafana.github.io/k6-extension-registry/registry.json
 
-If the [registry.json](https://grafana.github.io/k6-extension-registry/registry.json) changes, the [watch](https://github.com/grafana/k6-extension-registry/actions/workflows/watch.yml) workflow triggers the execution of external GitHub workflows (for example, the `extension-registry-changed` workflow of the [grafana/k6-extension-catalog](https://github.com/grafana/k6-extension-catalog) repository, which is responsible for keeping the extension catalogs up-to-date)
+If the [registry.json](https://grafana.github.io/k6-extension-registry/registry.json) changes, the [watch](https://github.com/grafana/k6-extension-registry/actions/workflows/watch.yml) workflow creates a `repository_dispatch` event with `extension-registry-changed` event_type parameter to execute external GitHub workflows (for example, the `extension-registry-changed` workflow of the [grafana/k6-extension-catalog](https://github.com/grafana/k6-extension-catalog) repository, which is responsible for keeping the extension catalogs up-to-date)
 
 ## Contributing
 
@@ -78,9 +78,9 @@ Extensions owned by the `grafana` GitHub organization are not officially support
 
 If it is missing from the registry source, it will be set with the default `community` value during generation.
 
-### Product
+### Products
 
-The `product` property contains the names of the k6 products in which the extension is available.
+The `products` property contains the names of the k6 products in which the extension is available.
 
 Some extensions are not available in all k6 products. This may be for a technological or business reason, or the functionality of the extension may not make sense in the given product.
 
@@ -90,6 +90,24 @@ Possible values:
   - **cloud**: Extensions are available in *Grafana Cloud k6*
 
 If the property is missing or empty in the source of the registry, it means that the extension is only available in the *k6 OSS* product. In this case, the registry will be filled in accordingly during generation.
+
+### Categories
+
+The `categories` property contains the categories to which the extension belongs.
+
+If the property is missing or empty in the registry source, the default value is "misc".
+
+Possible values:
+
+  - **authentication**
+  - **browser**
+  - **data**
+  - **kubernetes**
+  - **messaging**
+  - **misc**
+  - **observability**
+  - **protocol**
+  - **reporting**
 
 ### Repository Metadata
 
@@ -147,24 +165,33 @@ If a repository is archived, it usually means that the owner has no intention of
   outputs:
     - dashboard
   tier: official
+  categories:
+    - reporting
+    - observability
 
 - module: github.com/grafana/xk6-sql
   description: Load test SQL Servers
   imports:
     - k6/x/sql
   tier: official
-  product: ["cloud", "oss"]
+  products: ["cloud", "oss"]
+  categories:
+    - data
 
 - module: github.com/grafana/xk6-disruptor
   description: Inject faults to test
   imports:
     - k6/x/disruptor
   tier: official
+  categories:
+    - kubernetes
 
 - module: github.com/szkiba/xk6-faker
   description: Generate random fake data
   imports:
     - k6/x/faker
+  categories:
+    - data
 ```
 
 <details>
@@ -175,12 +202,16 @@ Registry generated from the source above.
 ```json file=docs/example.json
 [
   {
+    "categories": [
+      "reporting",
+      "observability"
+    ],
     "description": "Web-based metrics dashboard for k6",
     "module": "github.com/grafana/xk6-dashboard",
     "outputs": [
       "dashboard"
     ],
-    "product": [
+    "products": [
       "oss"
     ],
     "repo": {
@@ -190,7 +221,7 @@ Registry generated from the source above.
       "name": "xk6-dashboard",
       "owner": "grafana",
       "public": true,
-      "stars": 320,
+      "stars": 323,
       "topics": [
         "xk6",
         "xk6-official",
@@ -237,12 +268,15 @@ Registry generated from the source above.
     "tier": "official"
   },
   {
+    "categories": [
+      "data"
+    ],
     "description": "Load test SQL Servers",
     "imports": [
       "k6/x/sql"
     ],
     "module": "github.com/grafana/xk6-sql",
-    "product": [
+    "products": [
       "cloud",
       "oss"
     ],
@@ -253,7 +287,7 @@ Registry generated from the source above.
       "name": "xk6-sql",
       "owner": "grafana",
       "public": true,
-      "stars": 102,
+      "stars": 104,
       "topics": [
         "k6",
         "sql",
@@ -273,12 +307,15 @@ Registry generated from the source above.
     "tier": "official"
   },
   {
+    "categories": [
+      "kubernetes"
+    ],
     "description": "Inject faults to test",
     "imports": [
       "k6/x/disruptor"
     ],
     "module": "github.com/grafana/xk6-disruptor",
-    "product": [
+    "products": [
       "oss"
     ],
     "repo": {
@@ -323,12 +360,15 @@ Registry generated from the source above.
     "tier": "official"
   },
   {
+    "categories": [
+      "data"
+    ],
     "description": "Generate random fake data",
     "imports": [
       "k6/x/faker"
     ],
     "module": "github.com/szkiba/xk6-faker",
-    "product": [
+    "products": [
       "oss"
     ],
     "repo": {
@@ -356,9 +396,12 @@ Registry generated from the source above.
     "tier": "community"
   },
   {
+    "categories": [
+      "misc"
+    ],
     "description": "A modern load testing tool, using Go and JavaScript",
     "module": "go.k6.io/k6",
-    "product": [
+    "products": [
       "cloud",
       "oss"
     ],
@@ -369,7 +412,7 @@ Registry generated from the source above.
       "name": "k6",
       "owner": "grafana",
       "public": true,
-      "stars": 24184,
+      "stars": 24285,
       "topics": [
         "es6",
         "go",
