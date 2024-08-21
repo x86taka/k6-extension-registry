@@ -91,22 +91,28 @@ jobs:
         uses: actions/deploy-pages@v4
 
   notify:
+    strategy:
+      matrix:
+        repo: ["k6-extension-catalog", "k6-extension-list"]
     runs-on: ubuntu-latest
+    env:
+      EVENT_TYPE: extension-registry-changed
     needs:
       - generate
       - publish
     if: ${{ github.ref_name == 'main' && needs.generate.outputs.changed == 'true' }}
     steps:
-      - name: login
-        run: |
-          unset GITHUB_TOKEN
-          echo "${{secrets.GITHUB_TOKEN}}" | gh auth login --with-token
-      - name: k6-extension-catalog
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.K6_EXTENSION_REGISTRY_CHANGE_NOTIFIER_ID }}
+          private-key: ${{ secrets.K6_EXTENSION_REGISTRY_CHANGE_NOTIFIER_PEM }}
+          owner: ${{ github.repository_owner }}
+      - name: Dispatch event
         continue-on-error: true
-        run: |
-          gh workflow run -R grafana/k6-extension-catalog extension-registry-changed
-
-      - name: k6-extension-list
-        continue-on-error: true
-        run: |
-          gh workflow run -R grafana/k6-extension-list extension-registry-changed
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          repository: ${{ github.repository_owner }}/${{ matrix.repo }}
+          event-type: ${{ env.EVENT_TYPE }}
