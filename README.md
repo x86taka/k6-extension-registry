@@ -159,7 +159,7 @@ If a repository is archived, it usually means that the owner has no intention of
 
 **Example registry source**
 
-```yaml
+```yaml file=docs/example.yaml
 - module: github.com/grafana/xk6-dashboard
   description: Web-based metrics dashboard for k6
   outputs:
@@ -192,6 +192,13 @@ If a repository is archived, it usually means that the owner has no intention of
     - k6/x/faker
   categories:
     - data
+
+- module: gitlab.com/szkiba/xk6-banner
+  description: Print ASCII art banner from k6 test
+  imports:
+    - k6/x/banner
+  categories:
+    - misc
 ```
 
 <details>
@@ -215,13 +222,15 @@ Registry generated from the source above.
       "oss"
     ],
     "repo": {
+      "clone_url": "https://github.com/grafana/xk6-dashboard.git",
       "description": "A k6 extension that makes k6 metrics available on a web-based dashboard.",
       "homepage": "https://github.com/grafana/xk6-dashboard",
       "license": "AGPL-3.0",
       "name": "xk6-dashboard",
       "owner": "grafana",
       "public": true,
-      "stars": 323,
+      "stars": 325,
+      "timestamp": 1719907965,
       "topics": [
         "xk6",
         "xk6-official",
@@ -281,6 +290,7 @@ Registry generated from the source above.
       "oss"
     ],
     "repo": {
+      "clone_url": "https://github.com/grafana/xk6-sql.git",
       "description": "k6 extension to load test RDBMSs (PostgreSQL, MySQL, MS SQL and SQLite3)",
       "homepage": "https://github.com/grafana/xk6-sql",
       "license": "Apache-2.0",
@@ -288,6 +298,7 @@ Registry generated from the source above.
       "owner": "grafana",
       "public": true,
       "stars": 104,
+      "timestamp": 1721400602,
       "topics": [
         "k6",
         "sql",
@@ -319,13 +330,15 @@ Registry generated from the source above.
       "oss"
     ],
     "repo": {
+      "clone_url": "https://github.com/grafana/xk6-disruptor.git",
       "description": "Extension for injecting faults into k6 tests",
       "homepage": "https://k6.io/docs/javascript-api/xk6-disruptor/",
       "license": "AGPL-3.0",
       "name": "xk6-disruptor",
       "owner": "grafana",
       "public": true,
-      "stars": 87,
+      "stars": 88,
+      "timestamp": 1724358828,
       "topics": [
         "chaos-engineering",
         "fault-injection",
@@ -372,6 +385,7 @@ Registry generated from the source above.
       "oss"
     ],
     "repo": {
+      "clone_url": "https://github.com/szkiba/xk6-faker.git",
       "description": "Random fake data generator for k6.",
       "homepage": "http://ivan.szkiba.hu/xk6-faker/",
       "license": "AGPL-3.0",
@@ -379,6 +393,7 @@ Registry generated from the source above.
       "owner": "szkiba",
       "public": true,
       "stars": 49,
+      "timestamp": 1719935566,
       "topics": [
         "xk6",
         "xk6-javascript-k6-x-faker"
@@ -399,6 +414,37 @@ Registry generated from the source above.
     "categories": [
       "misc"
     ],
+    "description": "Print ASCII art banner from k6 test",
+    "imports": [
+      "k6/x/banner"
+    ],
+    "module": "gitlab.com/szkiba/xk6-banner",
+    "products": [
+      "oss"
+    ],
+    "repo": {
+      "clone_url": "https://gitlab.com/szkiba/xk6-banner.git",
+      "description": "Print ASCII art banner from k6 test.",
+      "homepage": "https://gitlab.com/szkiba/xk6-banner",
+      "license": "MIT",
+      "name": "xk6-banner",
+      "owner": "szkiba",
+      "public": true,
+      "timestamp": 1724312566,
+      "topics": [
+        "xk6"
+      ],
+      "url": "https://gitlab.com/szkiba/xk6-banner",
+      "versions": [
+        "v0.1.0"
+      ]
+    },
+    "tier": "community"
+  },
+  {
+    "categories": [
+      "misc"
+    ],
     "description": "A modern load testing tool, using Go and JavaScript",
     "module": "go.k6.io/k6",
     "products": [
@@ -406,13 +452,13 @@ Registry generated from the source above.
       "oss"
     ],
     "repo": {
+      "clone_url": "https://github.com/grafana/k6.git",
       "description": "A modern load testing tool, using Go and JavaScript - https://k6.io",
       "homepage": "https://github.com/grafana/k6",
       "license": "AGPL-3.0",
       "name": "k6",
       "owner": "grafana",
       "public": true,
-      "stars": 24285,
       "topics": [
         "es6",
         "go",
