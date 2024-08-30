@@ -43,12 +43,18 @@ jobs:
           mkdir -p ${{ env.HTDOCS_DIR }}
           cp -p index.html ${{ env.HTDOCS_DIR }}
 
+      - name: XDG Cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/build/cache
+          key: xdg-cache
+
       - name: registry.json
         id: registry
-        uses: grafana/k6registry@v0.1.13
+        uses: grafana/k6registry@v0.1.14
         with:
           in: "registry.yaml"
-          out: "${{ env.HTDOCS_DIR }}/registry.json"
+          api: "${{ env.HTDOCS_DIR }}"
           lint: "true"
           ref: "${{ env.BASE_URL }}/registry.json"
 
