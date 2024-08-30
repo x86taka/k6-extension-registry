@@ -43,11 +43,11 @@ jobs:
           mkdir -p ${{ env.HTDOCS_DIR }}
           cp -p index.html ${{ env.HTDOCS_DIR }}
 
-      - name: XDG Cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/build/cache
-          key: xdg-cache
+      #      - name: XDG Cache
+      #        uses: actions/cache@v4
+      #        with:
+      #          path: ${{ github.workspace }}/build/cache
+      #          key: xdg-cache
 
       - name: registry.json
         id: registry
@@ -57,10 +57,6 @@ jobs:
           api: "${{ env.HTDOCS_DIR }}"
           lint: "true"
           ref: "${{ env.BASE_URL }}/registry.json"
-
-      - name: Fix cache
-        run: |
-          chmod -R g+r ${{ github.workspace }}/build/cache
 
       - name: Upload
         uses: actions/upload-artifact@v4
