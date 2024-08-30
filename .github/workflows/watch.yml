@@ -60,7 +60,7 @@ jobs:
 
       - name: Fix cache
         run: |
-          chown -R g+r ${{ github.workspace }}/build/cache
+          chmod -R g+r ${{ github.workspace }}/build/cache
 
       - name: Upload
         uses: actions/upload-artifact@v4
