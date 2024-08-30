@@ -59,6 +59,10 @@ jobs:
           lint: "true"
           ref: "${{ env.BASE_URL }}/registry.json"
 
+      - name: Fix cache
+        run: |
+          chmod -R og+r ${{ github.workspace }}/build/cache
+
       - name: Upload
         uses: actions/upload-artifact@v4
         if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
