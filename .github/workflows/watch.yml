@@ -42,12 +42,12 @@ jobs:
         run: |
           mkdir -p ${{ env.HTDOCS_DIR }}
           cp -p index.html ${{ env.HTDOCS_DIR }}
-          mkdir -p ${{ github.workspace }}/build/cache
+          mkdir -p ${{ env.XDG_CACHE_HOME }}
 
-      - name: XDG Cache
-        uses: actions/cache@v4
+      - name: Cache Restore
+        uses: actions/cache/restore@v4
         with:
-          path: ${{ github.workspace }}/build/cache
+          path: ${{ env.XDG_CACHE_HOME }}
           key: xdg-cache
 
       - name: registry.json
@@ -58,6 +58,13 @@ jobs:
           api: "${{ env.HTDOCS_DIR }}"
           lint: "true"
           ref: "${{ env.BASE_URL }}/registry.json"
+
+      - name: Cache Save
+        uses: actions/cache/save@v4
+        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
+        with:
+          path: ${{ env.XDG_CACHE_HOME }}
+          key: xdg-cache
 
       - name: Upload
         uses: actions/upload-artifact@v4
