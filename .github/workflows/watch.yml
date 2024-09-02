@@ -72,7 +72,7 @@ jobs:
         with:
           output: "${{ env.HTDOCS_DIR }}/ui"
           spec-file: "${{ env.HTDOCS_DIR }}/openapi.yaml"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          version: "^5.0.0"
 
       - name: Upload
         uses: actions/upload-artifact@v4
