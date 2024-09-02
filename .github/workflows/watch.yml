@@ -29,6 +29,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       XDG_CACHE_HOME: ${{ github.workspace }}/build/cache
       HTDOCS_DIR: ${{ github.workspace }}/build/htdocs
+      BUILD_DIR: ${{ github.workspace }}/build
     outputs:
       changed: ${{ steps.registry.outputs.changed }}
     steps:
@@ -66,12 +67,16 @@ jobs:
           path: ${{ env.XDG_CACHE_HOME }}
           key: xdg-cache
 
+      - name: Swagger UI generation workaround
+        run: |
+          mv ${{ env.HTDOCS_DIR }}/openapi.yaml ${{ env.BUILD_DIR }}/
+
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
         #        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
         with:
-          output: "${{ env.HTDOCS_DIR }}/ui"
-          spec-file: "${{ env.HTDOCS_DIR }}/openapi.yaml"
+          output: "${{ env.HTDOCS_DIR }}"
+          spec-file: "${{ env.BUILD_DIR }}/openapi.yaml"
           version: "^5.0.0"
 
       - name: Upload
