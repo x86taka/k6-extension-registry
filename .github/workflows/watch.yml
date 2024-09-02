@@ -80,9 +80,10 @@ jobs:
           version: "^5.0.0"
 
       - name: Generate Schema doc
+        #        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
         run: |
           pip install json-schema-for-humans
-          generate-schema-doc "${{ env.HTDOCS_DIR }}/registry.schema.json" "${{ env.HTDOCS_DIR }}"
+          generate-schema-doc --config with_footer=false --config collapse_long_descriptions=false "${{ env.HTDOCS_DIR }}/registry.schema.json" "${{ env.HTDOCS_DIR }}"
 
       - name: Upload
         uses: actions/upload-artifact@v4
