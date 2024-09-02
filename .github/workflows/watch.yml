@@ -68,14 +68,15 @@ jobs:
 
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
+        #        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
         with:
-          output: "${{ env.HTDOCS_DIR }}"
+          output: "${{ env.HTDOCS_DIR }}/ui"
           spec-file: "${{ env.HTDOCS_DIR }}/openapi.yaml"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload
         uses: actions/upload-artifact@v4
-        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
+        #        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
         with:
           path: ${{ env.HTDOCS_DIR }}
           name: "htdocs"
@@ -85,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - generate
-    if: ${{ github.ref_name == 'main' && needs.generate.outputs.changed == 'true' }}
+    #    if: ${{ github.ref_name == 'main' && needs.generate.outputs.changed == 'true' }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       HTDOCS_DIR: ${{ github.workspace }}/htdocs
