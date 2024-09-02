@@ -66,6 +66,13 @@ jobs:
           path: ${{ env.XDG_CACHE_HOME }}
           key: xdg-cache
 
+      - name: Generate Swagger UI
+        uses: Legion2/swagger-ui-action@v1
+        with:
+          output: "${{ env.HTDOCS_DIR }}"
+          spec-file: "${{ env.HTDOCS_DIR }}/openapi.yaml"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload
         uses: actions/upload-artifact@v4
         if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
