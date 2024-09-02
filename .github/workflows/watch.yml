@@ -79,6 +79,11 @@ jobs:
           spec-file: "${{ env.BUILD_DIR }}/openapi.yaml"
           version: "^5.0.0"
 
+      - name: Generate Schema doc
+        run: |
+          pip install json-schema-for-humans
+          generate-schema-doc "${{ env.HTDOCS_DIR }}/registry.schema.json" "${{ env.HTDOCS_DIR }}"
+
       - name: Upload
         uses: actions/upload-artifact@v4
         #        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
