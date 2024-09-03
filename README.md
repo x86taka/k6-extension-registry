@@ -6,6 +6,10 @@ The source of the **k6 Extension Registry** https://registry.k6.io
 
 Check the [Contributing Guidelines](CONTRIBUTING.md) for the extension registration process.
 
+## Custom registry
+
+A custom registry can be created and maintained using the [k6registry](https://github.com/grafana/k6registry) tool. The content of the registry and the catalog can be fully controlled by the user.
+
 ## Registered Properties
 
 Only those properties of the extensions are registered, which either cannot be detected automatically, or delegation to the extension is not allowed.
