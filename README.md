@@ -68,3 +68,9 @@ The categories to which the extension belongs. **Optional, defaults to `["misc"]
 List of supported versions. **Optional, the default is to query the repository manager API**
 
 Normally, the registration does not include this property, it is automatically queried using the repository manager API. Automation can be disabled by setting it and only the versions specified here will be available.
+
+## Schema
+
+The [schema documentation](https://registry.k6.io/registry.schema.html) contains a detailed description of the properties available in the registry.
+
+Check the [Contributing Guidelines](CONTRIBUTING.md) for contributing to the registry schema.
