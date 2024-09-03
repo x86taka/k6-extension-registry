@@ -1,4 +1,5 @@
 $id: https://registry.k6.io/registry.schema.json
+$schema: "http://json-schema.org/draft-07/schema"
 $ref: "#/$defs/registry"
 $defs:
   registry:
@@ -9,7 +10,6 @@ $defs:
     type: array
     items:
       $ref: "#/$defs/extension"
-    additionalProperties: false
   catalog:
     description: |
       k6 Extension Catalog.
@@ -75,8 +75,8 @@ $defs:
         type: string
         description: |
           Brief description of the extension.
-        example: |
-          This is a very cool extension, it displays the message 'Hello World!'
+        examples:
+          - This is a very cool extension, it displays the message 'Hello World!'
       versions:
         type: array
         items:
@@ -315,7 +315,6 @@ $defs:
           - 1690893368
       clone_url:
         type: string
-        format: uri
         default: ""
         description: |
           URL for the git clone operation.

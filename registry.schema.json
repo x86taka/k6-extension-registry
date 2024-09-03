@@ -1,5 +1,6 @@
 {
   "$id": "https://registry.k6.io/registry.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "$ref": "#/$defs/registry",
   "$defs": {
     "registry": {
@@ -7,8 +8,7 @@
       "type": "array",
       "items": {
         "$ref": "#/$defs/extension"
-      },
-      "additionalProperties": false
+      }
     },
     "catalog": {
       "description": "k6 Extension Catalog.\n\nThe k6 extension catalog is an alternative representation of the k6 extension registry.\nThe catalog stores the extension data in an associative array (object),\nwhere the key is the import path for JavaScript extensions, and the output name for output extensions.\nThis data structure is optimized to resolve extensions as dependencies.\n",
@@ -64,7 +64,9 @@
         "description": {
           "type": "string",
           "description": "Brief description of the extension.\n",
-          "example": "This is a very cool extension, it displays the message 'Hello World!'\n"
+          "examples": [
+            "This is a very cool extension, it displays the message 'Hello World!'"
+          ]
         },
         "versions": {
           "type": "array",
@@ -292,7 +294,6 @@
         },
         "clone_url": {
           "type": "string",
-          "format": "uri",
           "default": "",
           "description": "URL for the git clone operation.\n\nThe clone_url property contains a (typically HTTP) URL, which is used to clone the repository.\n",
           "examples": [
