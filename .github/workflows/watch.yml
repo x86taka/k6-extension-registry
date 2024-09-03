@@ -1,7 +1,7 @@
 name: watch
 
 env:
-  BASE_URL: "https://grafana.github.io/k6-extension-registry"
+  BASE_URL: "https://registry.k6.io"
 
 on:
   workflow_dispatch:
@@ -42,7 +42,7 @@ jobs:
       - name: Prepare
         run: |
           mkdir -p ${{ env.HTDOCS_DIR }}
-          cp -p index.html ${{ env.HTDOCS_DIR }}
+          cp -p registry.schema.* ${{ env.HTDOCS_DIR }}
           mkdir -p ${{ env.XDG_CACHE_HOME }}
 
       - name: Cache Restore
@@ -67,16 +67,16 @@ jobs:
           path: ${{ env.XDG_CACHE_HOME }}
           key: xdg-cache
 
-      - name: Swagger UI generation workaround
+      - name: Workaround (until new k6registry)
         run: |
-          mv ${{ env.HTDOCS_DIR }}/openapi.yaml ${{ env.BUILD_DIR }}/
+          cp -p registry.schema.* ${{ env.HTDOCS_DIR }}
 
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
         #        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
         with:
           output: "${{ env.HTDOCS_DIR }}"
-          spec-file: "${{ env.BUILD_DIR }}/openapi.yaml"
+          spec-file: "openapi.yaml"
           version: "^5.0.0"
 
       - name: Generate Schema doc

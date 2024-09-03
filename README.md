@@ -12,6 +12,12 @@ To contribute, you need to modify the `registry.yaml` file and then open a pull 
 
 After the pull request is merged, the new extension registry will be automatically deployed to GitHub Pages.
 
+### schema - Generate JSON schema
+
+```bash
+yq -o=json -P registry.schema.yaml > registry.schema.json
+```
+
 ## Registry Validation
 
 The registry is validated using [JSON schema](https://grafana.github.io/k6registry/registry.schema.json). Requirements that cannot be validated using the JSON schema are validated using [custom linter](https://github.com/grafana/k6registry).
