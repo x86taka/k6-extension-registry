@@ -53,7 +53,7 @@ jobs:
 
       - name: registry.json
         id: registry
-        uses: grafana/k6registry@v0.1.18
+        uses: grafana/k6registry@v0.1.19
         with:
           in: "registry.yaml"
           api: "${{ env.HTDOCS_DIR }}"
@@ -66,11 +66,6 @@ jobs:
         with:
           path: ${{ env.XDG_CACHE_HOME }}
           key: xdg-cache
-
-      - name: Workaround (until new k6registry)
-        run: |
-          mv ${{ env.HTDOCS_DIR }}/openapi.yaml ${{ env.HTDOCS_DIR }}/not-openapi.yaml
-          cp -p registry.schema.* ${{ env.HTDOCS_DIR }}
 
       - name: Generate Swagger UI
         uses: Legion2/swagger-ui-action@v1
