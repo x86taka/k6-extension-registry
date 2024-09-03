@@ -69,6 +69,7 @@ jobs:
 
       - name: Workaround (until new k6registry)
         run: |
+          mv ${{ env.HTDOCS_DIR }}/openapi.yaml ${{ env.HTDOCS_DIR }}/not-openapi.yaml
           cp -p registry.schema.* ${{ env.HTDOCS_DIR }}
 
       - name: Generate Swagger UI
