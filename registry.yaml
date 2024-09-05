@@ -326,8 +326,9 @@
     - k6/x/dotenv
   categories:
     - misc
-- module: github.com/szkiba/xk6-faker
+- module: github.com/grafana/xk6-faker
   description: Generate random fake data
+  tier: official
   imports:
     - k6/x/faker
   categories:
