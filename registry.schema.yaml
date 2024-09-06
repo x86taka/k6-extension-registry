@@ -141,19 +141,7 @@ $defs:
         description: |
           The categories to which the extension belongs.
 
-          If the property is missing or empty in the registry source, the default value is "misc".
-
-          Possible values:
-
-            - authentication
-            - browser
-            - data
-            - kubernetes
-            - messaging
-            - misc
-            - observability
-            - protocol
-            - reporting
+          If the property is missing or empty in the registry source, the default value is `["misc"]`.
         examples:
           - ["data", "reporting"]
           - ["observability", "protocol"]
@@ -342,7 +330,7 @@ $defs:
       There are several k6 extensions owned by the `grafana` GitHub organization, which were created for experimental or example purposes only.
       The `official` tier value is needed so that officially supported extensions can be distinguished from them.
 
-      If it is missing from the registry source, it will be set with the default "community" value during generation.
+      If it is missing from the registry source, it will be set with the default `community` value during generation.
     examples:
       - "community"
       - "official"
@@ -360,8 +348,7 @@ $defs:
         - oss: Extensions are available in k6 OSS
         - cloud: Extensions are available in Grafana Cloud k6
 
-      If the property is missing or empty in the source of the registry, it means that the extension is only available in the k6 OSS product.
-      In this case, the registry will be filled in accordingly during generation.
+      If it is missing from the registry source, it will be set with the default `["community"]` value during generation.
     examples:
       - ["cloud", "oss"]
       - ["cloud"]
@@ -381,19 +368,7 @@ $defs:
     description: |
       The categories to which the extension belongs.
 
-      If the property is missing or empty in the registry source, the default value is "misc".
-
-      Possible values:
-
-        - authentication
-        - browser
-        - data
-        - kubernetes
-        - messaging
-        - misc
-        - observability
-        - protocol
-        - reporting
+      If it is missing from the registry source, it will be set with the default `["misc"]` value during generation.
     examples:
       - ["data", "reporting"]
       - ["observability", "protocol"]

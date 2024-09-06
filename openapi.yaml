@@ -40,9 +40,9 @@ paths:
     get:
       tags:
         - global
-      summary: Download the entire registry
+      summary: Entire registry
       description: Download the entire registry as a single JSON file
-      operationId: downloadRegistry
+      operationId: entireRegistry
       responses:
         "200":
           description: successful operation
@@ -54,9 +54,9 @@ paths:
     get:
       tags:
         - catalog
-      summary: Download the entire catalog
+      summary: Entire catalog
       description: Download the entire catalog as a single JSON file
-      operationId: downloadCatalog
+      operationId: entireCatalog
       responses:
         "200":
           description: successful operation
@@ -68,7 +68,7 @@ paths:
     get:
       tags:
         - module
-      summary: Query the data of a specific extension
+      summary: Query an extension
       description: Query the data of a specific extension as a single JSON file
       operationId: getExtension
       parameters:
@@ -86,7 +86,7 @@ paths:
     get:
       tags:
         - module
-      summary: Download extension badge
+      summary: Download a badge
       description: |
         Download an extension's badge as an SVG image
 
@@ -107,9 +107,9 @@ paths:
     get:
       tags:
         - subset
-      summary: Query extensions available in a product
+      summary: Suubset by product
       description: Querying the subset of the registry containing the extensions available in the product specified in the parameter
-      operationId: queryByProduct
+      operationId: subsetByProduct
       parameters:
         - $ref: "#/components/parameters/product"
       responses:
@@ -143,9 +143,9 @@ paths:
     get:
       tags:
         - subset
-      summary: Query extensions by source of support
+      summary: Subset by support
       description: Querying the subset of the registry containing the extensions with support specified in the parameter
-      operationId: queryByTier
+      operationId: subsetByTier
       parameters:
         - $ref: "#/components/parameters/tier"
       responses:
@@ -179,9 +179,9 @@ paths:
     get:
       tags:
         - subset
-      summary: Query extensions by specifying minimum support
+      summary: Subset by min support
       description: Query the subset of the registry that contains the extensions whose support is at least the level specified as a parameter.
-      operationId: queryAtLeastTier
+      operationId: subsetByMinTier
       parameters:
         - $ref: "#/components/parameters/tier"
       responses:
@@ -197,9 +197,9 @@ paths:
     get:
       tags:
         - catalog
-      summary: Catalog by specifying minimum support
+      summary: Catalog by min support
       description: Query the catalog containing extensions available with at least the support specified as a parameter.
-      operationId: catalogAtLeastTier
+      operationId: catalogByMinTier
       parameters:
         - $ref: "#/components/parameters/tier"
       responses:
@@ -215,9 +215,9 @@ paths:
     get:
       tags:
         - subset
-      summary: Query extensions by category
+      summary: Subset by category
       description: Querying the subset of the registry containing extensions belonging to the category specified in the parameter
-      operationId: queryByCategory
+      operationId: subsetByCategory
       parameters:
         - $ref: "#/components/parameters/category"
       responses:
@@ -233,9 +233,9 @@ paths:
     get:
       tags:
         - subset
-      summary: Query extensions by grade
+      summary: Subset by grade
       description: Querying the subset of the registry containing the extensions with the compliance grade specified in the parameter
-      operationId: queryByGrade
+      operationId: subsetByGrade
       parameters:
         - $ref: "#/components/parameters/grade"
       responses:
@@ -251,9 +251,9 @@ paths:
     get:
       tags:
         - subset
-      summary: Query extensions by passing grade
+      summary: Subset by min grade
       description: Querying the subset of the registry containing extensions with at least compliance grade specified in the parameter
-      operationId: queryByPassingGrade
+      operationId: subsetByMinGrade
       parameters:
         - $ref: "#/components/parameters/grade"
       responses:
