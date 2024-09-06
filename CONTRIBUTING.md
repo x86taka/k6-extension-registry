@@ -63,5 +63,6 @@ yq -o=json -P registry.schema.yaml > registry.schema.json
 
 ```bash
 npx @redocly/cli build-docs -o public/index.html openapi.yaml
-generate-schema-doc --config with_footer=false --config collapse_long_descriptions=false registry.schema.json public
+generate-schema-doc --config with_footer=false --config collapse_long_descriptions=false registry.schema.json public/schema
+mv public/schema/registry.schema.html public/schema/index.html
 ```
