@@ -35,6 +35,7 @@ Contributing will require the use of some tools, which can be installed most eas
 ```bash
 eget mikefarah/yq
 eget grafana/k6registry
+pip install json-schema-for-humans
 ```
 
 [eget]: https://github.com/zyedidia/eget
@@ -56,4 +57,11 @@ The source of the JSON schema is [registry.schema.yaml], after its modification,
 
 ```bash
 yq -o=json -P registry.schema.yaml > registry.schema.json
+```
+
+### public - Generate static documentation
+
+```bash
+npx @redocly/cli build-docs -o public/index.html openapi.yaml
+generate-schema-doc --config with_footer=false --config collapse_long_descriptions=false registry.schema.json public
 ```

@@ -42,6 +42,7 @@ jobs:
       - name: Prepare
         run: |
           mkdir -p ${{ env.HTDOCS_DIR }}
+          cp -rp public/* ${{ env.HTDOCS_DIR }}
           cp -p registry.schema.* ${{ env.HTDOCS_DIR }}
           mkdir -p ${{ env.XDG_CACHE_HOME }}
 
@@ -66,20 +67,6 @@ jobs:
         with:
           path: ${{ env.XDG_CACHE_HOME }}
           key: xdg-cache
-
-      - name: Generate Swagger UI
-        uses: Legion2/swagger-ui-action@v1
-        #        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
-        with:
-          output: "${{ env.HTDOCS_DIR }}"
-          spec-file: "openapi.yaml"
-          version: "^5.0.0"
-
-      - name: Generate Schema doc
-        #        if: ${{ github.ref_name == 'main' && steps.registry.outputs.changed }}
-        run: |
-          pip install json-schema-for-humans
-          generate-schema-doc --config with_footer=false --config collapse_long_descriptions=false "${{ env.HTDOCS_DIR }}/registry.schema.json" "${{ env.HTDOCS_DIR }}"
 
       - name: Upload
         uses: actions/upload-artifact@v4
