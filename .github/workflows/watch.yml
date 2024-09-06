@@ -44,6 +44,7 @@ jobs:
           mkdir -p ${{ env.HTDOCS_DIR }}
           cp -rp public/* ${{ env.HTDOCS_DIR }}
           cp -p registry.schema.* ${{ env.HTDOCS_DIR }}
+          cp -p openapi.yaml ${{ env.HTDOCS_DIR }}
           mkdir -p ${{ env.XDG_CACHE_HOME }}
 
       - name: Cache Restore
