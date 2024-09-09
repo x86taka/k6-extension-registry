@@ -56,7 +56,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.XDG_CACHE_HOME }}
-          key: xdg-cache
+          key: xdg-cache-${{ hashFiles( format('{}/**/*.json', env.HTDOCS_DIR) ) }}
 
       - name: registry.json
         id: registry
@@ -73,7 +73,7 @@ jobs:
         if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true' ) || inputs.force_changed }}
         with:
           path: ${{ env.XDG_CACHE_HOME }}
-          key: xdg-cache
+          key: xdg-cache-${{ hashFiles( format('{}/**/*.json', env.HTDOCS_DIR) ) }}
 
       - name: Upload
         uses: actions/upload-artifact@v4
