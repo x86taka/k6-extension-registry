@@ -56,7 +56,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ env.XDG_CACHE_HOME }}
-          key: xdg-cache-${{ hashFiles( format('{0}/**/*.json', env.HTDOCS_DIR) ) }}
+          key: xdg-cache
 
       - name: registry.json
         id: registry
@@ -68,12 +68,18 @@ jobs:
           ref: "${{ env.BASE_URL }}/registry.json"
           verbose: "true"
 
+      - name: Cache Clean
+        if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true' ) || inputs.force_changed }}
+        run: |
+          gh extension install actions/gh-actions-cache
+          gh actions-cache delete $cacheKey -R $GITHUB_REPOSITORY -B $GITHUB_REF_NAME --confirm
+
       - name: Cache Save
         uses: actions/cache/save@v4
         if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true' ) || inputs.force_changed }}
         with:
           path: ${{ env.XDG_CACHE_HOME }}
-          key: xdg-cache-${{ hashFiles( format('{0}/**/*.json', env.HTDOCS_DIR) ) }}
+          key: xdg-cache
 
       - name: Upload
         uses: actions/upload-artifact@v4
