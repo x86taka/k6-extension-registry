@@ -72,7 +72,7 @@ jobs:
         if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true' ) || inputs.force_changed }}
         run: |
           gh extension install actions/gh-actions-cache
-          gh actions-cache delete $cacheKey -R $GITHUB_REPOSITORY -B $GITHUB_REF_NAME --confirm
+          gh actions-cache delete xdg-cache --confirm
 
       - name: Cache Save
         uses: actions/cache/save@v4
