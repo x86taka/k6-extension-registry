@@ -60,7 +60,7 @@ jobs:
 
       - name: registry.json
         id: registry
-        uses: grafana/k6registry@v0.1.20
+        uses: grafana/k6registry@v0.1.23
         with:
           in: "registry.yaml"
           api: "${{ env.HTDOCS_DIR }}"
