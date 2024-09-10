@@ -72,7 +72,7 @@ jobs:
         if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true' ) || inputs.force_changed }}
         run: |
           gh extension install actions/gh-actions-cache
-          if gh cache list --key xdg-cache | grep -q  xdg_cache; then
+          if gh cache list --key xdg-cache | grep -q  xdg-cache; then
             gh actions-cache delete xdg-cache --confirm
           fi
 
