@@ -60,18 +60,13 @@ jobs:
 
       - name: registry.json
         id: registry
-        uses: grafana/k6registry@v0.1.22
+        uses: grafana/k6registry@v0.1.23
         with:
           in: "registry.yaml"
           api: "${{ env.HTDOCS_DIR }}"
           lint: "true"
           ref: "${{ env.BASE_URL }}/registry.json"
           verbose: "true"
-
-      - name: Inspect
-        run: |
-          id
-          ls -l ${{ env.XDG_CACHE_HOME }}
 
       - name: Cache Clean
         if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true' ) || inputs.force_changed }}
