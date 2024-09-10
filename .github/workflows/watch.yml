@@ -68,6 +68,11 @@ jobs:
           ref: "${{ env.BASE_URL }}/registry.json"
           verbose: "true"
 
+      - name: Inspect
+        run: |
+          id
+          ls -l ${{ env.XDG_CACHE_HOME }}
+
       - name: Cache Clean
         if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true' ) || inputs.force_changed }}
         run: |
