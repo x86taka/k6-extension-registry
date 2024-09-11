@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       force_changed:
-        description: Force the "changed" output of k6registry
+        description: Force "changed" state
         type: boolean
 
   push:
@@ -16,9 +16,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - registry.yaml
-      - .github/workflows/**
   schedule:
     - cron: "40 */2 * * *"
 
@@ -26,6 +23,7 @@ permissions:
   actions: write
   pages: write
   id-token: write
+  contents: read
 
 jobs:
   generate:
@@ -36,7 +34,7 @@ jobs:
       HTDOCS_DIR: ${{ github.workspace }}/build/htdocs
       BUILD_DIR: ${{ github.workspace }}/build
     outputs:
-      changed: ${{ steps.registry.outputs.changed }}
+      changed: ${{ steps.generate.outputs.changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -58,18 +56,31 @@ jobs:
           path: ${{ env.XDG_CACHE_HOME }}
           key: xdg-cache
 
-      - name: registry.json
-        id: registry
-        uses: grafana/k6registry@v0.1.23
+      - name: Generate Site
+        id: generate
+        uses: grafana/k6registry@v0.1.25
         with:
           in: "registry.yaml"
           api: "${{ env.HTDOCS_DIR }}"
           lint: "true"
           ref: "${{ env.BASE_URL }}/registry.json"
           verbose: "true"
+          test: >-
+            /registry.json
+            /catalog.json
+            /product/oss.json
+            /product/oss-catalog.json
+            /tier/official.json
+            /tier/official-catalog.json
+            /tier/community.json
+            /tier/community-catalog.json
+            /tier/at-least/official.json
+            /tier/at-least/official-catalog.json
+            /tier/at-least/partner.json
+            /tier/at-least/partner-catalog.json
 
       - name: Cache Clean
-        if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true' ) || inputs.force_changed }}
+        if: ${{ ( github.ref_name == 'main' && steps.generate.outputs.changed == 'true' ) || inputs.force_changed }}
         run: |
           gh extension install actions/gh-actions-cache
           if gh cache list --key xdg-cache | grep -q  xdg-cache; then
@@ -78,14 +89,14 @@ jobs:
 
       - name: Cache Save
         uses: actions/cache/save@v4
-        if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true' ) || inputs.force_changed }}
+        if: ${{ ( github.ref_name == 'main' && steps.generate.outputs.changed == 'true' ) || inputs.force_changed }}
         with:
           path: ${{ env.XDG_CACHE_HOME }}
           key: xdg-cache
 
-      - name: Upload
+      - name: Upload Site
         uses: actions/upload-artifact@v4
-        if: ${{ ( github.ref_name == 'main' && steps.registry.outputs.changed == 'true') || inputs.force_changed }}
+        if: ${{ ( github.ref_name == 'main' && steps.generate.outputs.changed == 'true') || inputs.force_changed }}
         with:
           path: ${{ env.HTDOCS_DIR }}
           name: "htdocs"
@@ -100,25 +111,21 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       HTDOCS_DIR: ${{ github.workspace }}/htdocs
     steps:
-      - name: Prepare
-        run: |
-          mkdir -p ${{ env.HTDOCS_DIR }}
-
-      - name: Download
+      - name: Download Site
         uses: actions/download-artifact@v4
         with:
           path: ${{ env.HTDOCS_DIR }}
           name: "htdocs"
 
-      - name: Setup Pages
+      - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.HTDOCS_DIR }}
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Pages
         uses: actions/deploy-pages@v4
 
   notify:
