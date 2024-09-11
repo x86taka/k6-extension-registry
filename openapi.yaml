@@ -8,7 +8,7 @@ info:
 
     The Grafana k6 Extension Registry database contains **up-to-date information about registered extensions**. The basic data of the extensions (e.g. go module path, JavaScript import path, description) are registered manually, the other data (e.g. available versions, number of stars) are retrieved automatically via the **repository manager API** (GitHub, GitLab, etc.).
 
-    Detailed information about response schemas can be found in the [schema documentation](https://registry.k6.io/schema). Schemas are defined in [registry.schema.json](registry.schema.json)
+    Detailed information about response schemas can be found in the [schema documentation](https://registry.k6.io/schema). Schemas are defined in [registry.schema.json](https://registry.k6.io/registry.schema.json)
 
     The source code of extensions is automatically **statically analyzed**. The result of the analysis is the **compliance level** of the best practices of Grafana k6 extensions (0-100%). Based on the compliance level, a **compliance grade** is also calculated (A-F). Based on the compliance grade, an SVG **compliance badge** is created for each extension. Example badge:
 
