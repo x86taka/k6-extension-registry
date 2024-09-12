@@ -131,7 +131,7 @@ jobs:
   notify:
     strategy:
       matrix:
-        repo: ["k6-extension-list", "k6-docs"]
+        repo: ["k6-extension-registry-wayback", "k6-extension-list", "k6-docs"]
     runs-on: ubuntu-latest
     env:
       EVENT_TYPE: extension-registry-changed
