@@ -69,6 +69,12 @@ List of supported versions. **Optional, the default is to query the repository m
 
 Normally, the registration does not include this property, it is automatically queried using the repository manager API. Automation can be disabled by setting it and only the versions specified here will be available.
 
+### `constraints`
+
+Version constraints. **Optional, the default is to use all detected versions**
+
+Version constraints are primarily used to filter automatically detected versions. It can also be used to filter the versions property imported from the origin registry.
+
 ## Schema
 
 The [schema documentation](https://registry.k6.io/registry.schema.html) contains a detailed description of the properties available in the registry.

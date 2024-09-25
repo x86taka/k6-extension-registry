@@ -73,6 +73,7 @@ $defs:
           - ["plugin"]
       description:
         type: string
+        default: ""
         description: |
           Brief description of the extension.
         examples:
@@ -87,6 +88,17 @@ $defs:
           Versions are tags whose format meets the requirements of semantic versioning. Version tags often start with the letter `v`, which is not part of the semantic version.
         examples:
           - ["v0.1.0", "v0.2.0", "v0.2.1"]
+      constraints:
+        type: string
+        pattern: "[vxX*|,&\\^0-9.+-><=, ~]+"
+        default: ""
+        description: |
+          Version constraints.
+
+          Version constraints are primarily used to filter automatically detected versions.
+          It can also be used to filter the versions property imported from the origin registry.
+        examples:
+          - [">=v0.4.0", ">v0.50.0"]
       repo:
         $ref: "#/$defs/repository"
         description: |
@@ -151,7 +163,6 @@ $defs:
           The result of the extension's k6 compliance checks.
     required:
       - module
-      - description
     additionalProperties: false
   compliance:
     description: |
