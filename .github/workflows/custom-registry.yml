@@ -1,7 +1,7 @@
 # Reusable workflow for custom k6 extension catalog maintenance.
 #
 # This workflow generates a custom k6 extension registry and catalog from a k6 extension registry source
-# and deploys it to the GitHub Pages site at `/registry.json` and `/catalog.json`.
+# and deploys them to the GitHub Pages site at `/registry.json` and `/catalog.json`.
 #
 # The name of the registry source file can be specified in the `source` parameter,
 # if it is missing, it defaults to `registry.yaml`.
