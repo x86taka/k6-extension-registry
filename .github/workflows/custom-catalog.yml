@@ -114,16 +114,16 @@ jobs:
         uses: actions/configure-pages@v5
         id: pages
 
-      - name: Generate Catalog
-        uses: grafana/k6registry@v0.1.28
+      - name: Generate Registry and Catalog
+        uses: grafana/k6registry@v0.1.29
         id: generate
         with:
           in: "${{ inputs.source }}"
-          out: "${{ env.HTDOCS_DIR }}/catalog.json"
-          catalog: "true"
+          out: "${{ env.HTDOCS_DIR }}/registry.json"
+          catalog: "${{ env.HTDOCS_DIR }}/catalog.json"
           lint: "${{ inputs.lint }}"
           origin: "${{ inputs.origin }}"
-          ref: "${{steps.pages.outputs.base_url}}/catalog.json"
+          ref: "${{steps.pages.outputs.base_url}}/registry.json"
           verbose: "true"
 
       - name: Cache Clean
