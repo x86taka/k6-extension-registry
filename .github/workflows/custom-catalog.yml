@@ -69,6 +69,7 @@ on:
         required: false
 
 permissions:
+  actions: write
   pages: write
   id-token: write
   contents: read
