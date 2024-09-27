@@ -135,6 +135,8 @@ jobs:
           - k6-extension-registry-wayback
           - k6-extension-list
           - k6-docs
+          - k6-docs-extension-registry-changed
+
     runs-on: ubuntu-latest
     env:
       EVENT_TYPE: extension-registry-changed
