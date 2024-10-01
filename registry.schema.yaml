@@ -139,11 +139,12 @@ $defs:
 
             - oss: Extensions are available in k6 OSS
             - cloud: Extensions are available in Grafana Cloud k6
+            - synthetic: Extensions are available in Grafana Synthetic Monitoring
 
           If the property is missing or empty in the source of the registry, it means that the extension is only available in the k6 OSS product.
           In this case, the registry will be filled in accordingly during generation.
         examples:
-          - ["cloud", "oss"]
+          - ["cloud", "synthetic", "oss"]
           - ["cloud"]
           - ["oss"]
       categories:
@@ -347,7 +348,7 @@ $defs:
       - "official"
   product:
     type: string
-    enum: ["oss", "cloud"]
+    enum: ["oss", "cloud", "synthetic"]
     description: |
       Products in which the extension can be used.
 
@@ -358,10 +359,11 @@ $defs:
 
         - oss: Extensions are available in k6 OSS
         - cloud: Extensions are available in Grafana Cloud k6
+        - synthetic: Extensions are available in Grafana Synthetic Monitoring
 
       If it is missing from the registry source, it will be set with the default `["community"]` value during generation.
     examples:
-      - ["cloud", "oss"]
+      - ["cloud", "synthetic", "oss"]
       - ["cloud"]
       - ["oss"]
   category:
