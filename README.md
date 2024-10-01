@@ -75,6 +75,12 @@ Version constraints. **Optional, the default is to use all detected versions**
 
 Version constraints are primarily used to filter automatically detected versions. It can also be used to filter the versions property imported from the origin registry.
 
+### `cgo`
+
+Flag indicating the need for cgo. **Optional, cgo is not enabled by default**
+
+The `cgo` property value `true` indicates that cgo must be enabled to build the extension.
+
 ## Schema
 
 The [schema documentation](https://registry.k6.io/registry.schema.html) contains a detailed description of the properties available in the registry.
