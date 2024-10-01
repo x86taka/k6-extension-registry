@@ -83,6 +83,11 @@
             ]
           ]
         },
+        "cgo": {
+          "type": "boolean",
+          "default": false,
+          "description": "Flag indicating the need for cgo.\n\nThe `cgo` property value `true` indicates that cgo must be enabled to build the extension.\n"
+        },
         "constraints": {
           "type": "string",
           "pattern": "[vxX*|,&\\^0-9.+-><=, ~]+",

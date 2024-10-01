@@ -88,6 +88,13 @@ $defs:
           Versions are tags whose format meets the requirements of semantic versioning. Version tags often start with the letter `v`, which is not part of the semantic version.
         examples:
           - ["v0.1.0", "v0.2.0", "v0.2.1"]
+      cgo:
+        type: boolean
+        default: false
+        description: |
+          Flag indicating the need for cgo.
+
+          The `cgo` property value `true` indicates that cgo must be enabled to build the extension.
       constraints:
         type: string
         pattern: "[vxX*|,&\\^0-9.+-><=, ~]+"
