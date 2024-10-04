@@ -130,7 +130,6 @@
     - observability
 - module: github.com/grafana/xk6-client-tracing
   description: Client for load testing distributed tracing backends
-  tier: official
   imports:
     - k6/x/tracing
   categories:
