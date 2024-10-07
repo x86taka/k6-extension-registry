@@ -163,6 +163,9 @@
     - k6/x/faker
   categories:
     - data
+  products:
+    - cloud
+    - synthetic
 - module: github.com/grafana/xk6-kubernetes
   description: Interact with Kubernetes clusters
   tier: official
