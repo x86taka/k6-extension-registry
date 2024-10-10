@@ -164,6 +164,7 @@
   categories:
     - data
   products:
+    - oss
     - cloud
     - synthetic
 - module: github.com/grafana/xk6-kubernetes
