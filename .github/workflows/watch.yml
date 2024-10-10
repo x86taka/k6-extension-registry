@@ -23,7 +23,7 @@ permissions:
   actions: write
   pages: write
   id-token: write
-  contents: read
+  contents: write
 
 jobs:
   generate:
@@ -127,6 +127,51 @@ jobs:
 
       - name: Deploy Pages
         uses: actions/deploy-pages@v4
+
+  wiki:
+    runs-on: ubuntu-latest
+    needs:
+      - generate
+    if: ${{ ( github.ref_name == 'main' && needs.generate.outputs.changed == 'true' ) || inputs.force_changed }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      HTDOCS_DIR: ${{ github.workspace }}/htdocs
+      WIKI_WORK_DIR: ${{ github.workspace }}/wiki.work
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout Wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: ${{ env.WIKI_WORK_DIR }}
+
+      - name: Download Site
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ env.HTDOCS_DIR }}
+          name: "htdocs"
+
+      - name: Setup gomplate
+        uses: jason-dour/action-setup-gomplate@v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate
+        run: |
+          rm -rf ${{ env.WIKI_WORK_DIR }}/*
+          gomplate -c registry=${{ env.HTDOCS_DIR }}/registry.json --input-dir wiki --output-map='${{env.WIKI_WORK_DIR}}/{{.in|strings.TrimSuffix ".tpl"}}'
+
+      - name: Push
+        run: |
+          cd ${{env.WIKI_WORK_DIR}}
+          git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --local user.name 'github-actions[bot]'
+          git add .
+          if git commit -m "Update due to registry changes" 2>/dev/null >/dev/null; then
+            git push
+          fi
 
   notify:
     strategy:

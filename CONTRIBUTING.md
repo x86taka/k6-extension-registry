@@ -35,6 +35,7 @@ Contributing will require the use of some tools, which can be installed most eas
 ```bash
 eget mikefarah/yq
 eget grafana/k6registry
+eget hairyhenderson/gomplate
 pip install json-schema-for-humans
 ```
 
@@ -65,4 +66,12 @@ yq -o=json -P registry.schema.yaml > registry.schema.json
 npx @redocly/cli build-docs -o public/index.html openapi.yaml
 generate-schema-doc --config with_footer=false --config collapse_long_descriptions=false registry.schema.json public/schema
 mv public/schema/registry.schema.html public/schema/index.html
+```
+
+### wiki - Generate wiki pages
+
+```bash
+export BASE_URL=https://registry.k6.io
+curl -s -o build/registry.json $BASE_URL/registry.json
+gomplate -c registry=build/registry.json --input-dir wiki --output-map='build/wiki/{{.in|strings.TrimSuffix ".tpl"}}'
 ```
