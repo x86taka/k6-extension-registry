@@ -124,6 +124,9 @@
 - module: github.com/grafana/xk6-client-prometheus-remote
   description: Test Prometheus Remote Write performance
   tier: official
+  products:
+    - oss
+    - cloud
   imports:
     - k6/x/remotewrite
   categories:
@@ -177,6 +180,9 @@
 - module: github.com/grafana/xk6-loki
   description: Client for load testing Loki
   tier: official
+  products:
+    - oss
+    - cloud
   imports:
     - k6/x/loki
   categories:
@@ -230,6 +236,9 @@
 - module: github.com/grafana/xk6-ssh
   description: SSH
   tier: official
+  products:
+    - oss
+    - cloud
   imports:
     - k6/x/ssh
   categories:
