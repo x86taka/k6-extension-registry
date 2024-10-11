@@ -226,6 +226,13 @@
   categories:
     - reporting
     - data
+- module: github.com/grafana/xk6-python
+  description: Write k6 tests in Python
+  tier: community
+  imports:
+    - k6/x/python
+  categories:
+    - misc
 - module: github.com/grafana/xk6-sql
   description: Load-test SQL Servers
   tier: official
