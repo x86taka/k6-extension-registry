@@ -233,15 +233,15 @@
     - k6/x/python
   categories:
     - misc
-#- module: github.com/grafana/xk6-sm
-#  description: Output extension for Synthetic Monitoring
-#  tier: official
-#  products:
-#    - synthetic
-#  outputs:
-#    - sm
-#  categories:
-#    - misc
+- module: github.com/grafana/xk6-sm
+  description: Output extension for Synthetic Monitoring
+  tier: official
+  products:
+    - synthetic
+  outputs:
+    - sm
+  categories:
+    - misc
 - module: github.com/grafana/xk6-sql
   description: Load-test SQL Servers
   tier: official
