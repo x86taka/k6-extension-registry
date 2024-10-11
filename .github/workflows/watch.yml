@@ -180,7 +180,9 @@ jobs:
           - k6-extension-registry-wayback
           - k6-extension-list
           - k6-docs
-          - k6-docs-extension-registry-changed
+          - k6-distro-official
+          - k6-distro-cloud
+          - k6-distro-synthetic
 
     runs-on: ubuntu-latest
     env:
