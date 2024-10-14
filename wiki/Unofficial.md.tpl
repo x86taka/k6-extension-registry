@@ -1,4 +1,4 @@
-The table below lists k6 extensions owned by Grafana Labs but not officially supported.
+Set of k6 extensions developed by Grafana, but not officially supported.
 
 Name | Description
 -----|------------

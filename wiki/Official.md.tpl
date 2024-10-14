@@ -1,4 +1,4 @@
-The following table lists the official k6 extensions.
+Set of k6 extensions that are officially supported by Grafana.
 
 Name | Description | Availability
 -----|-------------|-------------

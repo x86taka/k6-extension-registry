@@ -1,4 +1,4 @@
-The following table lists the community k6 extensions.
+Set of k6 extensions developed by the community, without official support.
 
 Name | Description
 -----|------------
