@@ -9,3 +9,7 @@
   - [[Official|Official]]
   - [[Community|Community]]
   - [[Unofficial|Unofficial]]
+
+### Extensions by Type
+  - [[JavaScript|JavaScript]]
+  - [[Output|Output]]
