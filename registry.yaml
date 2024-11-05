@@ -249,6 +249,46 @@
     - k6/x/sql
   categories:
     - data
+- module: github.com/grafana/xk6-sql-driver-azuresql
+  description: xk6-sql driver extension for Microsoft Azure SQL database support
+  imports:
+    - k6/x/sql/driver/azuresql
+  categories:
+    - data
+- module: github.com/grafana/xk6-sql-driver-clickhouse
+  description: xk6-sql driver extension for ClickHouse database support
+  imports:
+    - k6/x/sql/driver/clickhouse
+  categories:
+    - data
+- module: github.com/grafana/xk6-sql-driver-mysql
+  description: xk6-sql driver extension for MySQL database support
+  tier: official
+  imports:
+    - k6/x/sql/driver/mysql
+  categories:
+    - data
+- module: github.com/grafana/xk6-sql-driver-postgres
+  description: xk6-sql driver extension for Postgres database support
+  tier: official
+  imports:
+    - k6/x/sql/driver/postgres
+  categories:
+    - data
+- module: github.com/grafana/xk6-sql-driver-sqlite3
+  description: xk6-sql driver extension for SQLite v3 database support
+  tier: official
+  cgo: true
+  imports:
+    - k6/x/sql/driver/sqlite3
+  categories:
+    - data
+- module: github.com/grafana/xk6-sql-driver-sqlserver
+  description: xk6-sql driver extension for Microsoft SQL Server database support
+  imports:
+    - k6/x/sql/driver/sqlserver
+  categories:
+    - data
 - module: github.com/grafana/xk6-ssh
   description: SSH
   tier: official
