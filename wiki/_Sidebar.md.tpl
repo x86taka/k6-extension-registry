@@ -1,5 +1,9 @@
 ### [[Home|Home]]
 
+### [[Compliance|Compliance]]
+
+### [[Broken|Broken]]
+
 ### Extensions by Product
   - [[Grafana Cloud k6|Grafana Cloud k6]]
   - [[Synthetic Monitoring|Synthetic Monitoring]]
