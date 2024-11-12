@@ -203,6 +203,17 @@ $defs:
         examples:
           - "C"
           - "A"
+      issues:
+        type: array
+        description: |
+          A list of compliance check IDs that failed.
+
+          The `issues`` property is primarily used for debugging. It contains the (implementation-dependent) identifiers of those compliance checks that failed.
+        items:
+          type: string
+        examples:
+          - ["build", "smoke"]
+          - ["readme", "versions"]
     additionalProperties: false
   grade:
     description: |
