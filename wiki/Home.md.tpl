@@ -2,11 +2,23 @@
 
 *Various reports on the availability of [Grafana k6 extensions](https://grafana.com/docs/k6/latest/extensions/) can be found here.*
 
-Use the sidebar on the right to navigate between the reports.
+The content of the wiki is generated automatically, so it is consistent with the state of the [current registry](https://registry.k6.io/registry.json). Use the sidebar on the right to navigate between the reports. The [k6 Extension Registry Service UI]({{.Env.BASE_URL}}/ui/) can be used for interactive API queries.
 
-The content of the wiki is generated automatically, so it is consistent with the state of the [current registry](https://registry.k6.io/registry.json).
+The following table lists all registered k6 extensions.
 
-The [k6 Extension Registry Service UI]({{.Env.BASE_URL}}/ui/) can be used for interactive API queries.
+Repository | Description | Availability
+-----------|-------------|-------------
+{{ range $idx, $ext:= .registry -}}
+{{ if (ne $ext.module "go.k6.io/k6") -}}
+{{ if and $ext.repo $ext.repo.url }}[{{ $ext.repo.owner }}/{{ $ext.repo.name }}]({{$ext.repo.url}}){{else}}{{ $ext.module }}{{end}} | {{ $ext.description }} | {{ range $idx, $product := $ext.products }}{{$product}} {{end}}
+{{ end -}}
+{{ end }}
+
+The list can be downloaded in [JSON format]({{.Env.BASE_URL}}/registry.json) using the command below.
+
+```bash
+curl '{{.Env.BASE_URL}}/registry.json'
+```
 
 > [!WARNING]
 > Do not modify the wiki manually!
