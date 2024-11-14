@@ -63,7 +63,7 @@ jobs:
 
       - name: Generate Site
         id: generate
-        uses: grafana/k6registry@v0.1.34
+        uses: grafana/k6registry@v0.1.35
         with:
           in: "registry.yaml"
           api: "${{ env.HTDOCS_DIR }}"
