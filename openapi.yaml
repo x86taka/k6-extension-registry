@@ -105,6 +105,27 @@ paths:
           description: successful operation
         "404":
           description: module not found
+  /module/{module}/grade.svg:
+    get:
+      tags:
+        - module
+      summary: Download a grade badge
+      description: |
+        Download an extension's grade badge as an SVG image
+
+        Example:
+
+        ![xk6-sql](https://registry.k6.io/module/github.com/grafana/xk6-sql/grade.svg)
+      operationId: getGradeBadge
+      parameters:
+        - $ref: "#/components/parameters/module"
+      produces:
+        - image/svg+xml
+      responses:
+        "200":
+          description: successful operation
+        "404":
+          description: module not found
   /product/{product}.json:
     get:
       tags:
