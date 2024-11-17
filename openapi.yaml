@@ -66,6 +66,20 @@ paths:
             application/json:
               schema:
                 $ref: "registry.schema.json#/$defs/catalog"
+  /metrics.json:
+    get:
+      tags:
+        - global
+      summary: Registry metrics
+      description: Download the registry metrics as a single JSON file
+      operationId: getMetrics
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "registry.schema.json#/$defs/metrics"
   /module/{module}/extension.json:
     get:
       tags:

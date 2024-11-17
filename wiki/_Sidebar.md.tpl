@@ -1,9 +1,9 @@
 ### [[Home|Home]]
 
 ### Health
-  - [[Broken|Broken]]
   - [[Compliance|Compliance]]
-  - [[Ownerless|Ownerless]]
+  - [[Issues|Issues]]
+  - [[Telemetry|Telemetry]]
 
 ### Extensions by Product
   - [[Grafana Cloud k6|Grafana Cloud k6]]
