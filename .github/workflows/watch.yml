@@ -63,7 +63,7 @@ jobs:
 
       - name: Generate Site
         id: generate
-        uses: grafana/k6registry@v0.1.35
+        uses: grafana/k6registry@v0.1.36
         with:
           in: "registry.yaml"
           api: "${{ env.HTDOCS_DIR }}"
@@ -166,7 +166,7 @@ jobs:
       - name: Generate
         run: |
           rm -rf ${{ env.WIKI_WORK_DIR }}/*
-          gomplate -c registry=${{ env.HTDOCS_DIR }}/registry.json --input-dir wiki --output-map='${{env.WIKI_WORK_DIR}}/{{.in|strings.TrimSuffix ".tpl"}}'
+          gomplate -c registry=${{ env.HTDOCS_DIR }}/registry.json -c metrics=${{ env.HTDOCS_DIR }}/metrics.json -c schema=registry.schema.json --input-dir wiki --output-map='${{env.WIKI_WORK_DIR}}/{{.in|strings.TrimSuffix ".tpl"}}'
 
       - name: Push
         run: |
