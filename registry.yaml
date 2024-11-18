@@ -289,6 +289,12 @@
     - k6/x/sql/driver/sqlserver
   categories:
     - data
+- module: github.com/grafana/xk6-sql-driver-ramsql
+  description: xk6-sql driver extension for RamSQL database support
+  imports:
+    - k6/x/sql/driver/ramsql
+  categories:
+    - data
 - module: github.com/grafana/xk6-ssh
   description: SSH
   tier: official
