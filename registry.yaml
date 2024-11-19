@@ -172,13 +172,13 @@
     - synthetic
 - module: github.com/grafana/xk6-kubernetes
   description: Interact with Kubernetes clusters
+  tier: official
   imports:
     - k6/x/kubernetes
   categories:
     - kubernetes
 - module: github.com/grafana/xk6-loki
   description: Client for load testing Loki
-  tier: official
   products:
     - oss
     - cloud
