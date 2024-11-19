@@ -172,7 +172,6 @@
     - synthetic
 - module: github.com/grafana/xk6-kubernetes
   description: Interact with Kubernetes clusters
-  tier: official
   imports:
     - k6/x/kubernetes
   categories:
@@ -190,7 +189,6 @@
     - messaging
 - module: github.com/grafana/xk6-notification
   description: Create notifications
-  tier: official
   imports:
     - k6/x/notification
   categories:
@@ -204,7 +202,6 @@
     - data
 - module: github.com/grafana/xk6-output-kafka
   description: Export k6 results in real-time to Kafka
-  tier: official
   outputs:
     - xk6-kafka
   categories:
@@ -220,7 +217,6 @@
     - observability
 - module: github.com/grafana/xk6-output-timescaledb
   description: Export k6 results to TimescaleDB
-  tier: official
   outputs:
     - timescaledb
   categories:
