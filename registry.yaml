@@ -393,12 +393,6 @@
     - cache
   categories:
     - misc
-- module: github.com/szkiba/xk6-chai
-  description: Embed k6chaijs into the k6 binary
-  imports:
-    - k6/x/chai
-  categories:
-    - misc
 - module: github.com/szkiba/xk6-csv
   description: Parse CSV values
   imports:
@@ -415,12 +409,6 @@
   description: Write k6 tests in golang
   imports:
     - k6/x/g0
-  categories:
-    - misc
-- module: github.com/szkiba/xk6-mock
-  description: Mock HTTP(S) servers
-  imports:
-    - k6/x/mock
   categories:
     - misc
 - module: github.com/szkiba/xk6-output-plugin
