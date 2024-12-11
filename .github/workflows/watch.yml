@@ -61,28 +61,25 @@ jobs:
         with:
           go-version: "1.22.x"
 
-      - name: Generate Site
+      - name: Setup eget
+        uses: grafana/k6-extension-actions/setup-eget@v0.1.0
+
+      - name: Setup k6registry
+        uses: grafana/k6-extension-actions/setup-k6registry@v0.1.0
+
+      - name: Run k6registry
         id: generate
-        uses: grafana/k6registry@v0.1.36
-        with:
-          in: "registry.yaml"
-          api: "${{ env.HTDOCS_DIR }}"
-          lint: "true"
-          ref: "${{ env.BASE_URL }}/registry.json"
-          verbose: "true"
-          test: >-
-            /registry.json
-            /catalog.json
-            /product/oss.json
-            /product/oss-catalog.json
-            /tier/official.json
-            /tier/official-catalog.json
-            /tier/community.json
-            /tier/community-catalog.json
-            /tier/at-least/official.json
-            /tier/at-least/official-catalog.json
-            /tier/at-least/partner.json
-            /tier/at-least/partner-catalog.json
+        env:
+          GITHUB_TOKEN: ${{github.token}}
+        run: >
+          k6registry -v
+          --lint
+          --api "${{ env.HTDOCS_DIR }}"
+          --ref "${{ env.BASE_URL }}/registry.json"
+          --test /registry.json,/catalog.json,/product/oss.json,/product/oss-catalog.json
+          --test /tier/official.json,/tier/official-catalog.json,/tier/community.json,/tier/community-catalog.json
+          --test /tier/at-least/official.json,/tier/at-least/official-catalog.json,/tier/at-least/partner.json,/tier/at-least/partner-catalog.json
+          registry.yaml
 
       - name: Cache Clean
         if: ${{ ( github.ref_name == 'main' && steps.generate.outputs.changed == 'true' ) || inputs.force_changed }}

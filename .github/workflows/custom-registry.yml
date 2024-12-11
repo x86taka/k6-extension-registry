@@ -114,17 +114,28 @@ jobs:
         uses: actions/configure-pages@v5
         id: pages
 
+      - name: Setup eget
+        uses: grafana/k6-extension-actions/setup-eget@v0.1.0
+
+      - name: Setup k6registry
+        uses: grafana/k6-extension-actions/setup-k6registry@v0.1.0
+
       - name: Generate Registry and Catalog
-        uses: grafana/k6registry@v0.1.36
         id: generate
-        with:
-          in: "${{ inputs.source }}"
-          out: "${{ env.HTDOCS_DIR }}/registry.json"
-          catalog: "${{ env.HTDOCS_DIR }}/catalog.json"
-          lint: "${{ inputs.lint }}"
-          origin: "${{ inputs.origin }}"
-          ref: "${{steps.pages.outputs.base_url}}/registry.json"
-          verbose: "true"
+        env:
+          GITHUB_TOKEN: ${{github.token}}
+        run: >
+          if [ ]; then
+            LINT="--lint"
+          fi
+
+          k6registry -v
+            ${LINT}
+            --out "${{ env.HTDOCS_DIR }}/registry.json"
+            --origin "${{ inputs.origin }}"
+            --catalog "${{ env.HTDOCS_DIR }}/catalog.json"
+            --ref "${{steps.pages.outputs.base_url}}/registry.json"
+           "${{ inputs.source }}"
 
       - name: Cache Clean
         if: ${{ github.ref_name == 'main' && steps.generate.outputs.changed == 'true' }}
