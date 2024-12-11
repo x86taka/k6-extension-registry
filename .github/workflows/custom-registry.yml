@@ -120,22 +120,24 @@ jobs:
       - name: Setup k6registry
         uses: grafana/k6-extension-actions/setup-k6registry@v0.1.0
 
+      - name: Check inputs
+        id: params
+        run: |
+          if [ "${{inputs.lint}}" == "true" ] ; then
+             echo "lint=--lint" >> $GITHUB_OUTPUT
+          fi
+
       - name: Generate Registry and Catalog
         id: generate
         env:
           GITHUB_TOKEN: ${{github.token}}
         run: >
-          if [ ]; then
-            LINT="--lint"
-          fi
-
-          k6registry -v
-            ${LINT}
-            --out "${{ env.HTDOCS_DIR }}/registry.json"
-            --origin "${{ inputs.origin }}"
-            --catalog "${{ env.HTDOCS_DIR }}/catalog.json"
-            --ref "${{steps.pages.outputs.base_url}}/registry.json"
-           "${{ inputs.source }}"
+          k6registry -v ${{steps.params.outputs.lint}}
+          --out "${{ env.HTDOCS_DIR }}/registry.json"
+          --origin "${{ inputs.origin }}"
+          --catalog "${{ env.HTDOCS_DIR }}/catalog.json"
+          --ref "${{steps.pages.outputs.base_url}}/registry.json"
+          "${{ inputs.source }}"
 
       - name: Cache Clean
         if: ${{ github.ref_name == 'main' && steps.generate.outputs.changed == 'true' }}
