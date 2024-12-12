@@ -74,5 +74,6 @@ mv public/schema/registry.schema.html public/schema/index.html
 export BASE_URL=https://registry.k6.io
 curl -s -o build/registry.json $BASE_URL/registry.json
 curl -s -o build/metrics.json $BASE_URL/metrics.json
-gomplate -c registry=build/registry.json -c metrics=build/metrics.json  --input-dir wiki --output-map='build/wiki/{{.in|strings.TrimSuffix ".tpl"}}'
+curl -s -o build/official-metrics.json $BASE_URL/tier/official-metrics.json
+gomplate -c registry=build/registry.json -c metrics=build/metrics.json -c official_metrics=build/official-metrics.json -c schema=registry.schema.json --input-dir wiki --output-map='build/wiki/{{.in|strings.TrimSuffix ".tpl"}}'
 ```
