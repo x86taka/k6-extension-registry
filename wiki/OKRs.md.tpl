@@ -7,8 +7,8 @@ Official extensions must meet all compliance requirements.
 
 ## Key Results
 
-{{- $grade_a_count := index .official_metrics "registry_grade_a_count" -}}
-{{- $extension_count := index .official_metrics "registry_extension_count" -}}
+{{- $grade_a_count := index .official_metrics "grade_a_count" -}}
+{{- $extension_count := index .official_metrics "extension_count" -}}
 {{- $grade_a_pc := math.Round (mul (div $grade_a_count $extension_count) 100) -}}
 
 {{- $no_issues_count := 0 -}}
@@ -35,7 +35,7 @@ Grade | Count
 ------|------
 {{ range $key, $value:= .official_metrics }}
 {{-  if strings.Contains "_grade_" $key -}}
-{{-    ($key|strings.TrimSuffix "_count"|strings.TrimPrefix "registry_grade_" |toUpper) }} | {{ $value }}
+{{-    ($key|strings.TrimSuffix "_count"|strings.TrimPrefix "grade_" |toUpper) }} | {{ $value }}
 {{ end -}}
 {{ end}}
 {{ end}}

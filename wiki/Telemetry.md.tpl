@@ -8,7 +8,7 @@ Metrics by extension compliance grades. The grade for the fully compliant (witho
 pie showData 
 {{ range $key, $value:= .metrics }}
   {{- if strings.Contains "_grade_" $key -}}
-  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "registry_grade_" $key) -}}
+  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "grade_" $key) -}}
   {{- if index $.metrics $key}}"{{strings.ToUpper $name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
 {{- end -}}
@@ -34,7 +34,7 @@ Metrics by extension compliance issues. Since an extension may have several comp
 pie showData title 
 {{ range $key, $value:= .metrics }}
   {{- if strings.Contains "_issue_" $key -}}
-  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "registry_issue_" $key) -}}
+  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "issue_" $key) -}}
   {{- if index $.metrics $key}}"{{$name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
 {{- end -}}
@@ -60,7 +60,7 @@ Metrics by support. Unofficial extensions are actually community-supported exten
 pie showData
 {{ range $key, $value:= .metrics }}
   {{- if strings.Contains "_tier_" $key -}}
-  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "registry_tier_" $key) -}}
+  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "tier_" $key) -}}
   {{- if index $.metrics $key}}"{{$name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
 {{- end -}}
@@ -86,7 +86,7 @@ Metrics by product. Since an extension may be supported in several products, the
 pie showData
 {{ range $key, $value:= .metrics }}
   {{- if strings.Contains "_product_" $key -}}
-  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "registry_product_" $key) -}}
+  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "product_" $key) -}}
   {{- if index $.metrics $key}}"{{index $products $name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
 {{- end -}}
@@ -112,7 +112,7 @@ Metrics by extension category. Since an extension can belong to several categori
 pie showData
 {{ range $key, $value:= .metrics }}
   {{- if strings.Contains "_category_" $key -}}
-  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "registry_category_" $key) -}}
+  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "category_" $key) -}}
   {{- if index $.metrics $key}}"{{$name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
 {{- end -}}
@@ -138,7 +138,7 @@ Metrics by extension type. Since an extension can implement both JavaScript and 
 pie showData
 {{ range $key, $value:= .metrics }}
   {{- if strings.Contains "_type_" $key -}}
-  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "registry_type_" $key) -}}
+  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "type_" $key) -}}
   {{- if index $.metrics $key}}"{{$name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
 {{- end -}}
