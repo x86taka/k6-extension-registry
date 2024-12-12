@@ -7,7 +7,7 @@ Metrics by extension compliance grades. The grade for the fully compliant (witho
 ```mermaid
 pie showData 
 {{ range $key, $value:= .metrics }}
-  {{- if strings.Contains "_grade_" $key -}}
+  {{- if strings.Contains "grade_" $key -}}
   {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "grade_" $key) -}}
   {{- if index $.metrics $key}}"{{strings.ToUpper $name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
@@ -33,7 +33,7 @@ Metrics by extension compliance issues. Since an extension may have several comp
 ```mermaid
 pie showData title 
 {{ range $key, $value:= .metrics }}
-  {{- if strings.Contains "_issue_" $key -}}
+  {{- if strings.Contains "issue_" $key -}}
   {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "issue_" $key) -}}
   {{- if index $.metrics $key}}"{{$name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
@@ -45,7 +45,7 @@ pie showData title
 Metric | Description | Value
 -------|-------|------------
 {{ range $key, $value:= .metrics }}
-{{-  if strings.Contains "_issue_" $key -}}
+{{-  if strings.Contains "issue_" $key -}}
 {{-    $key }} | {{ strings.TrimSuffix "." (index $props $key "description") }} | {{ $value }}
 {{ end -}}
 {{ end}}
@@ -59,7 +59,7 @@ Metrics by support. Unofficial extensions are actually community-supported exten
 ```mermaid
 pie showData
 {{ range $key, $value:= .metrics }}
-  {{- if strings.Contains "_tier_" $key -}}
+  {{- if strings.Contains "tier_" $key -}}
   {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "tier_" $key) -}}
   {{- if index $.metrics $key}}"{{$name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
@@ -71,7 +71,7 @@ pie showData
 Metric | Description | Value
 -------|-------|------------
 {{ range $key, $value:= .metrics }}
-{{-  if strings.Contains "_tier_" $key -}}
+{{-  if strings.Contains "tier_" $key -}}
 {{-    $key }} | {{ strings.TrimSuffix "." (index $props $key "description") }} | {{ $value }}
 {{ end -}}
 {{ end}}
@@ -85,7 +85,7 @@ Metrics by product. Since an extension may be supported in several products, the
 ```mermaid
 pie showData
 {{ range $key, $value:= .metrics }}
-  {{- if strings.Contains "_product_" $key -}}
+  {{- if strings.Contains "product_" $key -}}
   {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "product_" $key) -}}
   {{- if index $.metrics $key}}"{{index $products $name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
@@ -97,7 +97,7 @@ pie showData
 Metric | Description | Value
 -------|-------|------------
 {{ range $key, $value:= .metrics }}
-{{-  if strings.Contains "_product_" $key -}}
+{{-  if strings.Contains "product_" $key -}}
 {{-    $key }} | {{ strings.TrimSuffix "." (index $props $key "description") }} | {{ $value }}
 {{ end -}}
 {{ end}}
@@ -111,7 +111,7 @@ Metrics by extension category. Since an extension can belong to several categori
 ```mermaid
 pie showData
 {{ range $key, $value:= .metrics }}
-  {{- if strings.Contains "_category_" $key -}}
+  {{- if strings.Contains "category_" $key -}}
   {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "category_" $key) -}}
   {{- if index $.metrics $key}}"{{$name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
@@ -123,7 +123,7 @@ pie showData
 Metric | Description | Value
 -------|-------|------------
 {{ range $key, $value:= .metrics }}
-{{-  if strings.Contains "_category_" $key -}}
+{{-  if strings.Contains "category_" $key -}}
 {{-    $key }} | {{ strings.TrimSuffix "." (index $props $key "description") }} | {{ $value }}
 {{ end -}}
 {{ end}}
@@ -137,7 +137,7 @@ Metrics by extension type. Since an extension can implement both JavaScript and 
 ```mermaid
 pie showData
 {{ range $key, $value:= .metrics }}
-  {{- if strings.Contains "_type_" $key -}}
+  {{- if strings.Contains "type_" $key -}}
   {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "type_" $key) -}}
   {{- if index $.metrics $key}}"{{$name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
   {{- end -}}
@@ -149,7 +149,7 @@ pie showData
 Metric | Description | Value
 -------|-------|------------
 {{ range $key, $value:= .metrics }}
-{{-  if strings.Contains "_type_" $key -}}
+{{-  if strings.Contains "type_" $key -}}
 {{-    $key }} | {{ strings.TrimSuffix "." (index $props $key "description") }} | {{ $value }}
 {{ end -}}
 {{ end}}
