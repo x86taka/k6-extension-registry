@@ -4,6 +4,7 @@
   - [[Compliance|Compliance]]
   - [[Issues|Issues]]
   - [[Telemetry|Telemetry]]
+  - [[OKRs|OKRs]]
 
 ### Extensions by Product
   - [[Grafana Cloud k6|Grafana Cloud k6]]
