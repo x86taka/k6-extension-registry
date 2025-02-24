@@ -1,5 +1,8 @@
 - module: go.k6.io/k6
   description: A modern load testing tool, using Go and JavaScript
+  tier: official
+  imports:
+    - k6
   categories:
     - misc
   products:
