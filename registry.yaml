@@ -1,9 +1,19 @@
+- module: go.k6.io/k6
+  description: A modern load testing tool, using Go and JavaScript
+  categories:
+    - misc
+  products:
+    - cloud
+    - synthetic
+    - oss
+  constraints: ">=0.55.0"
 - module: github.com/GhMartingit/xk6-mongo
   description: Load-test Mongo no-SQL databases
   imports:
     - k6/x/mongo
   categories:
     - data
+  constraints: ">=1.0.0"
 - module: github.com/JorTurFer/xk6-input-prometheus
   description: Enables real-time input from prometheus
   imports:
@@ -54,6 +64,7 @@
     - k6/x/cable
   categories:
     - messaging
+  constraints: ">=0.5.0"
 - module: github.com/avitalique/xk6-file
   description: Write files
   imports:
@@ -66,6 +77,7 @@
     - k6/x/gcp
   categories:
     - misc
+  constraints: ">=0.3.0"
 - module: github.com/deejiw/xk6-interpret
   description: Interpret Go code
   imports:
@@ -131,6 +143,7 @@
     - k6/x/remotewrite
   categories:
     - observability
+  constraints: ">=0.3.0"
 - module: github.com/grafana/xk6-client-tracing
   description: Client for load testing distributed tracing backends
   imports:
@@ -145,6 +158,7 @@
   categories:
     - reporting
     - observability
+  constraints: ">=0.7.4"
 - module: github.com/grafana/xk6-disruptor
   description: "Inject faults to test \U0001F4A3"
   tier: official
@@ -152,6 +166,7 @@
     - k6/x/disruptor
   categories:
     - kubernetes
+  constraints: ">=0.3.10"
 - module: github.com/grafana/xk6-exec
   description: Run external commands
   tier: official
@@ -159,6 +174,7 @@
     - k6/x/exec
   categories:
     - misc
+  constraints: ">0.4.0"
 - module: github.com/grafana/xk6-faker
   description: Generate random fake data
   tier: official
@@ -170,6 +186,7 @@
     - oss
     - cloud
     - synthetic
+  constraints: ">=0.4.0"
 - module: github.com/grafana/xk6-kubernetes
   description: Interact with Kubernetes clusters
   tier: official
@@ -177,6 +194,7 @@
     - k6/x/kubernetes
   categories:
     - kubernetes
+  constraints: ">0.9.0"
 - module: github.com/grafana/xk6-loki
   description: Client for load testing Loki
   products:
@@ -200,6 +218,7 @@
     - xk6-influxdb
   categories:
     - data
+  constraints: ">=0.5.0"
 - module: github.com/grafana/xk6-output-kafka
   description: Export k6 results in real-time to Kafka
   outputs:
@@ -207,6 +226,7 @@
   categories:
     - reporting
     - messaging
+  constraints: ">=0.5.0"
 - module: github.com/grafana/xk6-output-timescaledb
   description: Export k6 results to TimescaleDB
   outputs:
@@ -214,6 +234,7 @@
   categories:
     - reporting
     - data
+  constraints: ">=0.2.0"
 - module: github.com/grafana/xk6-python
   description: Write k6 tests in Python
   tier: community
@@ -237,6 +258,7 @@
     - sm
   categories:
     - misc
+  constraints: ">=0.1.0"
 - module: github.com/grafana/xk6-sql
   description: Load-test SQL Servers
   tier: official
@@ -244,18 +266,21 @@
     - k6/x/sql
   categories:
     - data
+  constraints: ">=1.0.0"
 - module: github.com/grafana/xk6-sql-driver-azuresql
   description: xk6-sql driver extension for Microsoft Azure SQL database support
   imports:
     - k6/x/sql/driver/azuresql
   categories:
     - data
+  constraints: ">=0.1.0"
 - module: github.com/grafana/xk6-sql-driver-clickhouse
   description: xk6-sql driver extension for ClickHouse database support
   imports:
     - k6/x/sql/driver/clickhouse
   categories:
     - data
+  constraints: ">=0.1.0"
 - module: github.com/grafana/xk6-sql-driver-mysql
   description: xk6-sql driver extension for MySQL database support
   tier: official
@@ -263,6 +288,7 @@
     - k6/x/sql/driver/mysql
   categories:
     - data
+  constraints: ">=0.1.0"
 - module: github.com/grafana/xk6-sql-driver-postgres
   description: xk6-sql driver extension for Postgres database support
   tier: official
@@ -270,6 +296,7 @@
     - k6/x/sql/driver/postgres
   categories:
     - data
+  constraints: ">=0.1.0"
 - module: github.com/grafana/xk6-sql-driver-sqlite3
   description: xk6-sql driver extension for SQLite v3 database support
   tier: official
@@ -278,18 +305,21 @@
     - k6/x/sql/driver/sqlite3
   categories:
     - data
+  constraints: ">=0.1.0"
 - module: github.com/grafana/xk6-sql-driver-sqlserver
   description: xk6-sql driver extension for Microsoft SQL Server database support
   imports:
     - k6/x/sql/driver/sqlserver
   categories:
     - data
+  constraints: ">=0.1.0"
 - module: github.com/grafana/xk6-sql-driver-ramsql
   description: xk6-sql driver extension for RamSQL database support
   imports:
     - k6/x/sql/driver/ramsql
   categories:
     - data
+  constraints: ">=0.1.0"
 - module: github.com/grafana/xk6-ssh
   description: SSH
   tier: official
@@ -300,12 +330,14 @@
     - k6/x/ssh
   categories:
     - misc
+  constraints: ">=0.1.0"
 - module: github.com/grafana/xk6-ts
   description: Add TypeScript support for k6
   imports:
     - k6/x/ts
   categories:
     - misc
+  constraints: ">=0.2.4"
 - module: github.com/kelseyaubrecht/xk6-webtransport
   description: Add support for webtransport protocol
   imports:
@@ -319,6 +351,7 @@
     - tracetest
   categories:
     - observability
+  constraints: ">=0.1.10"
 - module: github.com/leonyork/xk6-output-timestream
   description: Export results to AWS Timestream
   outputs:
@@ -326,6 +359,7 @@
   categories:
     - reporting
     - data
+  constraints: ">=0.9.80"
 - module: github.com/maksimall89/xk6-telegram
   description: Interact with Telegram Bots
   imports:
@@ -349,6 +383,7 @@
     - k6/x/kafka
   categories:
     - messaging
+  constraints: ">=0.30.0"
 - module: github.com/nicholasvuono/xk6-playwright
   description: Browser automation and end-to-end web testing using Playwright
   imports:
@@ -373,6 +408,7 @@
     - k6/x/mqtt
   categories:
     - messaging
+  constraints: ">=0.39.0"
 - module: github.com/skibum55/xk6-git
   description: Clone Git repositories from tests
   imports:
@@ -386,18 +422,21 @@
     - k6/x/ansible-vault
   categories:
     - data
+  constraints: ">=0.1.3"
 - module: github.com/szkiba/xk6-cache
   description: Enable vendoring remote HTTP modules to a single source-control-friendly file
   outputs:
     - cache
   categories:
     - misc
+  constraints: ">=0.2.0"
 - module: github.com/szkiba/xk6-csv
   description: Parse CSV values
   imports:
     - k6/x/csv
   categories:
     - data
+  constraints: ">=0.1.4"
 - module: github.com/szkiba/xk6-dotenv
   description: Load env vars from a .env file
   imports:
@@ -410,6 +449,7 @@
     - k6/x/g0
   categories:
     - misc
+  constraints: ">=0.1.5"
 - module: github.com/szkiba/xk6-output-plugin
   description: Dynamic output extension using your favorite programming language
   outputs:
@@ -424,6 +464,7 @@
   categories:
     - reporting
     - observability
+  constraints: ">=0.2.0"
 - module: github.com/szkiba/xk6-toml
   description: Encode and decode TOML values
   imports:
@@ -437,6 +478,7 @@
   categories:
     - reporting
     - observability
+  constraints: ">=0.2.0"
 - module: github.com/szkiba/xk6-yaml
   description: Encode and decode YAML values
   imports:
@@ -468,6 +510,7 @@
   categories:
     - messaging
     - protocol
+  constraints: ">=0.1.0"
 - module: gitlab.com/szkiba/xk6-banner
   description: Print ASCII art banner from k6 test
   imports:
