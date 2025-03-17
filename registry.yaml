@@ -238,6 +238,13 @@
     - reporting
     - data
   constraints: ">=0.2.0"
+- module: github.com/grafana/xk6-plugin
+  description: Create k6 plugins using JavaScript and Node.js
+  tier: community
+  imports:
+    - k6/x/plugin
+  categories:
+    - misc
 - module: github.com/grafana/xk6-python
   description: Write k6 tests in Python
   tier: community
