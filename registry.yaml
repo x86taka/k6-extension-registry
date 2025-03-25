@@ -146,7 +146,7 @@
     - k6/x/remotewrite
   categories:
     - observability
-  constraints: ">=0.3.0"
+  constraints: ">=0.3.2"
 - module: github.com/grafana/xk6-client-tracing
   description: Client for load testing distributed tracing backends
   imports:
