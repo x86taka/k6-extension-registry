@@ -19,11 +19,7 @@ on:
   schedule:
     - cron: "40 */2 * * *"
 
-permissions:
-  actions: write
-  pages: write
-  id-token: write
-  contents: write
+permissions: {}
 
 jobs:
   generate:
@@ -41,14 +37,15 @@ jobs:
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: false
 
       - name: Prepare
         run: |
-          mkdir -p ${{ env.HTDOCS_DIR }}
-          cp -rp public/* ${{ env.HTDOCS_DIR }}
-          cp -p registry.schema.* ${{ env.HTDOCS_DIR }}
-          cp -p openapi.yaml ${{ env.HTDOCS_DIR }}
-          mkdir -p ${{ env.XDG_CACHE_HOME }}
+          mkdir -p ${HTDOCS_DIR}
+          cp -rp public/* ${HTDOCS_DIR}
+          cp -p registry.schema.* ${HTDOCS_DIR}
+          cp -p openapi.yaml ${HTDOCS_DIR}
+          mkdir -p ${XDG_CACHE_HOME}
 
       - name: Cache Restore
         uses: actions/cache/restore@v4
@@ -74,8 +71,8 @@ jobs:
         run: >
           k6registry -v
           --lint
-          --api "${{ env.HTDOCS_DIR }}"
-          --ref "${{ env.BASE_URL }}/registry.json"
+          --api "${HTDOCS_DIR}"
+          --ref "${BASE_URL}/registry.json"
           --test /registry.json,/catalog.json,/product/oss.json,/product/oss-catalog.json
           --test /tier/official.json,/tier/official-catalog.json,/tier/community.json,/tier/community-catalog.json
           --test /tier/at-least/official.json,/tier/at-least/official-catalog.json,/tier/at-least/partner.json,/tier/at-least/partner-catalog.json
@@ -106,6 +103,10 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      contents: write
+
     needs:
       - generate
     if: ${{ ( github.ref_name == 'main' && needs.generate.outputs.changed == 'true' ) || inputs.force_changed }}
@@ -132,6 +133,8 @@ jobs:
 
   wiki:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs:
       - generate
     if: ${{ ( github.ref_name == 'main' && needs.generate.outputs.changed == 'true' ) || inputs.force_changed }}
@@ -142,12 +145,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Checkout Wiki
         uses: actions/checkout@v4
         with:
           repository: ${{ github.repository }}.wiki
           path: ${{ env.WIKI_WORK_DIR }}
+          persist-credentials: true
 
       - name: Download Site
         uses: actions/download-artifact@v4
@@ -156,18 +162,18 @@ jobs:
           name: "htdocs"
 
       - name: Setup gomplate
-        uses: jason-dour/action-setup-gomplate@v1.1.0
+        uses: jason-dour/action-setup-gomplate@81b9ca6f49d6594a118d19f0d05f6fd05372e64c # v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate
         run: |
-          rm -rf ${{ env.WIKI_WORK_DIR }}/*
-          gomplate -c registry=${{ env.HTDOCS_DIR }}/registry.json -c metrics=${{ env.HTDOCS_DIR }}/metrics.json -c official_metrics=${{ env.HTDOCS_DIR }}/tier/official-metrics.json -c schema=registry.schema.json --input-dir wiki --output-map='${{env.WIKI_WORK_DIR}}/{{.in|strings.TrimSuffix ".tpl"}}'
+          rm -rf ${WIKI_WORK_DIR}/*
+          gomplate -c registry=${HTDOCS_DIR}/registry.json -c metrics=${HTDOCS_DIR}/metrics.json -c official_metrics=${HTDOCS_DIR}/tier/official-metrics.json -c schema=registry.schema.json --input-dir wiki --output-map='${WIKI_WORK_DIR}/{{.in|strings.TrimSuffix ".tpl"}}'
 
       - name: Push
         run: |
-          cd ${{env.WIKI_WORK_DIR}}
+          cd ${WIKI_WORK_DIR}
           git config --local user.email 'github-actions[bot]@users.noreply.github.com'
           git config --local user.name 'github-actions[bot]'
           git add .
@@ -187,6 +193,9 @@ jobs:
           - k6-distro-synthetic
 
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      id-token: write
     env:
       EVENT_TYPE: extension-registry-changed
     needs:
@@ -203,7 +212,7 @@ jobs:
           owner: ${{ github.repository_owner }}
       - name: Dispatch event
         continue-on-error: true
-        uses: peter-evans/repository-dispatch@v3
+        uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 # v3.0.0
         with:
           token: ${{ steps.generate-token.outputs.token }}
           repository: ${{ github.repository_owner }}/${{ matrix.repo }}
