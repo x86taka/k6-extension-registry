@@ -24,6 +24,8 @@ permissions: {}
 jobs:
   generate:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       XDG_CACHE_HOME: ${{ github.workspace }}/build/cache
