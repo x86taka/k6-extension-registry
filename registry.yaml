@@ -520,3 +520,10 @@
     - k6/x/banner
   categories:
     - misc
+- module: github.com/ogarciacar/xk6-sftp
+  description: SFTP extension for k6
+  imports:
+    - k6/x/sftp
+  categories:
+    - protocol
+    - data
