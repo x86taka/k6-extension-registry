@@ -208,12 +208,6 @@
   categories:
     - observability
     - messaging
-- module: github.com/grafana/xk6-notification
-  description: Create notifications
-  imports:
-    - k6/x/notification
-  categories:
-    - reporting
 - module: github.com/grafana/xk6-output-influxdb
   description: Export results to InfluxDB v2
   tier: official
