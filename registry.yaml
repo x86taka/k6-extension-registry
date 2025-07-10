@@ -331,9 +331,6 @@
   categories:
     - data
   constraints: ">=0.1.0"
-  products:
-    - oss
-    - cloud
 - module: github.com/grafana/xk6-sql-driver-sqlserver
   description: xk6-sql driver extension for Microsoft SQL Server database support
   imports:
