@@ -9,7 +9,7 @@
     - cloud
     - synthetic
     - oss
-  constraints: ">=0.55.0"
+  constraints: ">=1.0.0"
 - module: github.com/GhMartingit/xk6-mongo
   description: Load-test Mongo no-SQL databases
   imports:
