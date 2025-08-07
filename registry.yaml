@@ -334,7 +334,6 @@
   constraints: ">=0.1.0"
   products:
     - oss
-    - cloud
 - module: github.com/grafana/xk6-sql-driver-ramsql
   description: xk6-sql driver extension for RamSQL database support
   imports:
@@ -344,7 +343,6 @@
   constraints: ">=0.1.0"
   products:
     - oss
-    - cloud
 - module: github.com/grafana/xk6-ssh
   description: Use SSH connections in your tests
   tier: official
