@@ -189,7 +189,6 @@ jobs:
         repo:
           - k6-extension-registry-wayback
           - k6-extension-list
-          - k6-docs
 
     runs-on: ubuntu-latest
     permissions:
