@@ -554,4 +554,14 @@
   categories:
     - protocol
     - data
+- module: github.com/copyleftdev/xk6-edi
+  description: "k6 extension for generating HIPAA X12 EDI transactions for healthcare load testing"
+  imports:
+    - k6/x/edi
+  categories:
+    - data
+    - misc
+  tier: community
+  products:
+    - oss
 
