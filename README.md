@@ -2,7 +2,11 @@
 
 The source of the **k6 Extension Registry** https://registry.k6.io
 
+
 ## Registration
+
+> [!NOTE]
+> We are reviewing the process and policies for contributing extensions to the k6 registry. The approval of submissions will be on hold until the new process is defined. Thanks for your understanding and patience.
 
 Check the [Contributing Guidelines](CONTRIBUTING.md) for the extension registration process.
 
