@@ -67,6 +67,11 @@ jobs:
         run: >
            go install github.com/grafana/k6registry/cmd/k6registry@v0.3.0
 
+      - name: Setup gomplate
+        uses: jason-dour/action-setup-gomplate@81b9ca6f49d6594a118d19f0d05f6fd05372e64c # v1.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run k6registry
         id: generate
         env:
