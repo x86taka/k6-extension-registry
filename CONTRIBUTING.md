@@ -9,7 +9,7 @@ Before you begin, make sure to familiarize yourself with the [Code of Conduct](C
 ## Contributing to the registry
 
 > [!IMPORTANT]
-> Before registering a new extension, please read the [Registry Requirements](https://grafana.com/docs/k6/latest/extensions/explanations/extensions-registry/#registry-requirements).
+> Before registering a new extension, please read the [Registry Requirements](https://grafana.com/docs/k6/latest/extensions/create/extensions-registry/).
 
 The source of the registry can be found in the [registry.yaml] file. To register an extension, simply add a new entry to the end of the file. The data of the already registered extension can be modified accordingly.
 
