@@ -65,7 +65,7 @@ jobs:
 
       - name: Setup k6registry
         run: >
-           go install github.com/grafana/k6registry/cmd/k6registry@latest
+           go install github.com/grafana/k6registry/cmd/k6registry@v0.3.0
 
       - name: Run k6registry
         id: generate
