@@ -67,12 +67,14 @@ generate_module_files() {
 # $1 input registry file
 # $2 output metrics file in json format
 # $3 output metrics file in prometheus format
-# $4 filters. Defaults to all (tier,grade,issue)
+# $4 timestamp for metrics
+# $5 filters. Defaults to all (tier,grade,issue)
 function generate_metrics() {
     local registry=$1
     local json_file=$2
     local prometheus_file=$3
-    local filters=${4:-"tier,grade,issue"}
+    local timestamp=$4
+    local filters=${5:-"tier,grade,issue"}
 
     jq --arg filters "$filters" '
         # Takes field name (e.g., "tier", "grade", "issue") and field value (e.g., "official", "A", "deprecated")
@@ -108,7 +110,7 @@ function generate_metrics() {
     ' $registry > $json_file
 
     # Convert JSON to Prometheus format
-    jq -r --arg timestamp "$(date +%s)000" '
+    jq -r --arg timestamp "${timestamp}" '
         to_entries[] | 
         .key as $metric_name |
         (.key | gsub("_count$"; "") | gsub("_"; " ")) as $description |
@@ -171,6 +173,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_DIR="${SCRIPT_DIR}/build"
 TEMPLATES_DIR="${SCRIPT_DIR}/api"
 
+TIMESTAMP="$(date +%s)000"
+
 # Check for required dependencies
 if ! command -v gomplate >/dev/null 2>&1; then
     echo "Error: gomplate is required but not installed."
@@ -195,6 +199,10 @@ while [[ $# -gt 0 ]]; do
             usage
             exit 0
             ;;
+        -t|--timestamp)
+             TIMESTAMP=$2
+             shift 2
+             ;;
         -v|--verbose)
             LOG="echo"
             shift 1
@@ -245,7 +253,7 @@ for tier in "${TIERS[@]}"; do
     generate_catalog "${BUILD_DIR}/tier/${tier}.json" "${BUILD_DIR}/tier/${tier}-catalog.json"
 
     # Generate metrics for tier
-    generate_metrics "${BUILD_DIR}/tier/${tier}.json" "${BUILD_DIR}/tier/${tier}-metrics.json" "${BUILD_DIR}/tier/${tier}-metrics.txt" "grade,issue"
+    generate_metrics "${BUILD_DIR}/tier/${tier}.json" "${BUILD_DIR}/tier/${tier}-metrics.json" "${BUILD_DIR}/tier/${tier}-metrics.txt" "${TIMESTAMP}" "grade,issue"
 done
 
 # Generate grade-based files
@@ -260,7 +268,7 @@ for grade in "${GRADES[@]}"; do
 done
 
 $LOG "Generating metrics"
-generate_metrics  "${BUILD_DIR}/registry.json" "${BUILD_DIR}/metrics.json" "${BUILD_DIR}/metrics.txt"
+generate_metrics  "${BUILD_DIR}/registry.json" "${BUILD_DIR}/metrics.json" "${BUILD_DIR}/metrics.txt" "${TIMESTAMP}"
 
 $LOG "Generation complete!"
 $LOG "Generated files in: ${BUILD_DIR}"
