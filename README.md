@@ -1,32 +1,28 @@
 # k6 Extension Registry
 
-The source of the **k6 Extension Registry** https://registry.k6.io
+The k6 extensions registry maintains the list of k6 extensions supported by k6.
 
+Extensions in this registry are [natively supported by k6](https://grafana.com/docs/k6/latest/extensions/run/#using-automatic-extension-loading).
 
-## Registration
+Extensions not listed in the registry can be used by [building custom k6 binaries using xk6](https://grafana.com/docs/k6/latest/extensions/run/build-k6-binary-using-go/).
 
-> [!NOTE]
-> We are reviewing the process and policies for contributing extensions to the k6 registry. The approval of submissions will be on hold until the new process is defined. Thanks for your understanding and patience.
+The extensions registry contains the following attributes:
+ * Description of extension (name, source registry, type, tier, et cetera). These are entered when [registering the extension](#registering-an-extension) and maintained in this repository
+ * Dynamic attributes retrieved from the source repository (e.g. GitHub, GitLab). For example, the number of Github stars. These attributes are automatically updated periodically.
+ * Dynamic attributes resulting from the extension linting (grade, issues found). These attributes are automatically updated periodically.
 
-Check the [Contributing Guidelines](CONTRIBUTING.md) for the extension registration process.
+The registry is published at https://registry.k6.io.
 
-## Reports
+It can be accessed using the API described in [openapi.yaml]. This API allows accessing subset of the registry by different criteria (tier, grade), and also fetch statistics about the extensions.
 
-Check the [Wiki](https://github.com/grafana/k6-extension-registry/wiki) for up-to-date [reports](https://github.com/grafana/k6-extension-registry/wiki) based on registry content.
+The [Wiki](https://github.com/grafana/k6-extension-registry/wiki) has human-readable reports based on registry content.
 
-## Custom registry
+## Registering an extension
 
-A custom registry can be created and maintained using the [k6registry](https://github.com/grafana/k6registry) tool. The content of the registry and the catalog can be fully controlled by the user.
+> [!IMPORTANT]
+> Before registering a new extension, please read the [Registry Requirements](https://grafana.com/docs/k6/latest/extensions/create/extensions-registry/).
 
-## Registered Properties
-
-Only those properties of the extensions are registered, which either cannot be detected automatically, or delegation to the extension is not allowed.
-
-Properties that are available using the repository manager API (GitHub API, GitLab API, etc) are intentionally not registered. For example, the number of stars can be queried via the repository manager API, so this property is not registered.
-
-Exceptions are the string-like properties that are embedded in the Grafana documentation. These properties are registered because it is not allowed to inject arbitrary text into the Grafana documentation site without approval. Therefore, these properties are registered (eg `description`)
-
-The properties provided by the repository managers are queried during registry processing and can be used to produce the output properties.
+The source of the registry can be found in the [registry.yaml] file. To register an extension, simply add a new entry to the end of the file.
 
 **example entry**
 
@@ -36,10 +32,9 @@ The properties provided by the repository managers are queried during registry p
   imports:
     - k6/x/sql
   tier: official
-  products: ["cloud", "oss"]
-  categories:
-    - data
 ```
+
+### Properties
 
 ### `module`
 
@@ -61,7 +56,8 @@ The output names implemented by the extension. An extension can register multipl
 
 Refers to the maintainer of the extension. **Optional, defaults to `community`**
 
-Extensions owned by the `grafana` GitHub organization are not officially supported by Grafana by default.
+> [!NOTE]
+> Extensions owned by the `grafana` GitHub organization are not officially supported by Grafana by default.
 
 ### `versions`
 
@@ -80,9 +76,3 @@ Version constraints are primarily used to filter automatically detected versions
 Flag indicating the need for cgo. **Optional, cgo is not enabled by default**
 
 The `cgo` property value `true` indicates that cgo must be enabled to build the extension.
-
-## Schema
-
-The [schema documentation](https://registry.k6.io/registry.schema.html) contains a detailed description of the properties available in the registry.
-
-Check the [Contributing Guidelines](CONTRIBUTING.md) for contributing to the registry schema.
