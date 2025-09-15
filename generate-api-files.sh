@@ -240,7 +240,7 @@ $LOG "Generating ${BUILD_DIR}/catalog.json..."
 generate_catalog "${REGISTRY_FILE}" "${BUILD_DIR}/catalog.json"
 
 # generate product/cloud-catalog.json to ensure backwards compatibility
-mkdir "${BUILD_DIR}/product"
+mkdir -p "${BUILD_DIR}/product"
 cp "${BUILD_DIR}/catalog.json" "${BUILD_DIR}/product/cloud-catalog.json"
 
 # Generate tier-based files
