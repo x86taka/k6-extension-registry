@@ -55,6 +55,9 @@ generate-schema-doc --config with_footer=false --config collapse_long_descriptio
 mv public/schema/registry.schema.html public/schema/index.html
 ```
 
+> [!IMPORTANT]
+> Changes in the static documentation are published by opening a PR in this repository with the updates
+
 ### wiki - Generate API files
 
 The registry is exposed using and API defined in [openapi.yaml]. This API is served using static files generated from the registry using the [generate-api-files.sh] script. The script takes the registry.json generated from [registry.yaml] using `k6registry` as input to generate the json file to be returned by each endpoint. It also generates a metrics.txt file with metrics for the extensions by tier, grade, and issues found.
