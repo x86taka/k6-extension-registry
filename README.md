@@ -2,7 +2,11 @@
 
 The source of the **k6 Extension Registry** https://registry.k6.io
 
+
 ## Registration
+
+> [!NOTE]
+> We are reviewing the process and policies for contributing extensions to the k6 registry. The approval of submissions will be on hold until the new process is defined. Thanks for your understanding and patience.
 
 Check the [Contributing Guidelines](CONTRIBUTING.md) for the extension registration process.
 
@@ -58,14 +62,6 @@ The output names implemented by the extension. An extension can register multipl
 Refers to the maintainer of the extension. **Optional, defaults to `community`**
 
 Extensions owned by the `grafana` GitHub organization are not officially supported by Grafana by default.
-
-### `products`
-
-Products in which the extension can be used. **Optional, defaults to `["oss"]`**
-
-### `categories`
-
-The categories to which the extension belongs. **Optional, defaults to `["misc"]`**
 
 ### `versions`
 
