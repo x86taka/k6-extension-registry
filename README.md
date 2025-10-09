@@ -76,3 +76,72 @@ Version constraints are primarily used to filter automatically detected versions
 Flag indicating the need for cgo. **Optional, cgo is not enabled by default**
 
 The `cgo` property value `true` indicates that cgo must be enabled to build the extension.
+
+## Updating registry on extension releases
+
+> [!NOTE]
+> This functionality is only available for extensions in the grafana organization. Extensions in other organizations have to update the registry opening a PR.
+
+Use the [register-version](./.github/workflows/register-version.yml) reusable workflow to automatically update registry when a new extension version is released.
+
+This workflow requires the `k6-extension-registry-updater` github app to be installed in the extension's repository, and the apps credentials (app id and private key) to be passed as secrets when calling the workflow. This credential can be obtained following the stablish procedures in grafana.
+
+**Example:**
+
+```yaml
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+jobs:
+  release:
+    name: Release
+    uses: grafana/xk6/.github/workflows/extension-release.yml@v1.1.4
+    permissions:
+      contents: write
+    with:
+      go-version: "1.24.x"
+      os: '["linux"]'
+      arch: '["amd64"]'
+      k6-version: "v1.2.3"
+      xk6-version: "1.1.4"
+
+  register-version:
+    name: Register Version
+    needs: [release]
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: grafana/k6-extension-registry/.github/workflows/register-version.yml@main
+    with:
+      module: github.com/grafana/xk6-example
+      version: ${{ github.ref_name }}
+      auto_merge: true
+    # this secrets must be obtained from the secrets vault
+    secrets:
+      app_id: ${{ K6_EXTENSION_REGISTRY_UPDATER_ID }}
+      app_pem: ${{ K6_EXTENSION_REGISTRY_UPDATER_PEM }}
+```
+
+### Workflow Inputs
+
+| Input | Description | Required | Default |
+|-------|-------------|----------|---------|
+| `module` | The module name to update (e.g., `github.com/grafana/xk6-sql`) | Yes | - |
+| `version` | The version to add (e.g., `v1.0.6`) | Yes | - |
+| `auto_merge` | Enable auto-merge for trusted sources | No | `true` |
+
+### Workflow Secrets
+
+| Secret | Description | Required |
+|--------|-------------|----------|
+| `app_id` | GitHub App ID for registry updater | Yes |
+| `app_pem` | GitHub App private key (PEM) for registry updater | Yes |
+
+### Features
+
+- **Pull request creation**: Creates a pull request with detailed information about the update
+- **Auto-merge**: Trusted sources can have their updates automatically merged
+- **Security**: Cross-validates repository URLs and module paths to prevent malicious updates
