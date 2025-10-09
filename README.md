@@ -84,7 +84,7 @@ The `cgo` property value `true` indicates that cgo must be enabled to build the 
 
 Use the [register-version](./.github/workflows/register-version.yml) reusable workflow to automatically update registry when a new extension version is released.
 
-This workflow requires the `k6-extension-registry-updater` github app to be installed in the extension's repository, and the apps credentials to be passed as secrets when calling the workflow.
+This workflow requires the `k6-extension-registry-updater` github app to be installed in the extension's repository, and the apps credentials (app id and private key) to be passed as secrets when calling the workflow. This credential can be obtained following the stablish procedures in grafana.
 
 **Example:**
 
@@ -119,9 +119,10 @@ jobs:
       module: github.com/grafana/xk6-example
       version: ${{ github.ref_name }}
       auto_merge: true
+    # this secrets must be obtained from the secrets vault
     secrets:
-      app_id: ${{ secrets.K6_EXTENSION_REGISTRY_UPDATER_ID }}
-      app_pem: ${{ secrets.K6_EXTENSION_REGISTRY_UPDATER_PEM }}
+      app_id: ${{ K6_EXTENSION_REGISTRY_UPDATER_ID }}
+      app_pem: ${{ K6_EXTENSION_REGISTRY_UPDATER_PEM }}
 ```
 
 ### Workflow Inputs
