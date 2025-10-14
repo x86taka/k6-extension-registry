@@ -41,14 +41,6 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           persist-credentials: false
 
-      - name: Prepare
-        run: |
-          mkdir -p ${HTDOCS_DIR}
-          cp -rp public/* ${HTDOCS_DIR}
-          cp -p registry.schema.* ${HTDOCS_DIR}
-          cp -p openapi.yaml ${HTDOCS_DIR}
-          mkdir -p ${XDG_CACHE_HOME}
-
       - name: Cache Restore
         uses: actions/cache/restore@v4
         with:
@@ -58,30 +50,49 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.22.x"
-
-      - name: Setup eget
-        uses: grafana/k6-extension-actions/setup-eget@v0.1.0
+          go-version: "1.24.x"
 
       - name: Setup k6registry
         run: >
-           go install github.com/grafana/k6registry/cmd/k6registry@v0.3.0
+           go install github.com/grafana/k6registry/cmd/k6registry@v0.4.0
 
       - name: Setup gomplate
         uses: jason-dour/action-setup-gomplate@81b9ca6f49d6594a118d19f0d05f6fd05372e64c # v1.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run k6registry
+      - name: Prepare
+        run: |
+          # create work directory
+          mkdir -p ${HTDOCS_DIR}
+
+          # copy static files
+          cp -rp public/* ${HTDOCS_DIR}
+
+          # get the registry schema
+          k6registry schema > ${HTDOCS_DIR}/registry.schema.json
+
+          # copy api specs
+          cp -p openapi.yaml ${HTDOCS_DIR}
+
+          # create cache used for saving k6registry working files (if not exists)
+          mkdir -p ${XDG_CACHE_HOME}
+
+      - name: Generate registry
         id: generate
         env:
           GITHUB_TOKEN: ${{github.token}}
-        run: >
-          k6registry -v
-          --lint
-          --ref "${BASE_URL}/registry.json"
-          registry.yaml --out "${HTDOCS_DIR}/registry.json"
+        run: |
+          k6registry -v --lint registry.yaml --out "${HTDOCS_DIR}/registry.json"
 
+          # check if changed from current published version
+          if ! curl -fsSL "${BASE_URL}/registry.json" | diff -q "${HTDOCS_DIR}/registry.json" - >/dev/null 2>&1; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update API
+        if: ${{ steps.generate.outputs.changed == 'true'  || inputs.force_changed }}
+        run: |
           ./generate-api-files.sh -b "${HTDOCS_DIR}"
 
       - name: Cache Clean
@@ -174,9 +185,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate
-        run: |
+        run: >
           rm -rf ${WIKI_WORK_DIR}/*
-          gomplate -c registry=${HTDOCS_DIR}/registry.json -c metrics=${HTDOCS_DIR}/metrics.json -c official_metrics=${HTDOCS_DIR}/tier/official-metrics.json -c schema=registry.schema.json --input-dir wiki --output-map="${WIKI_WORK_DIR}/{{.in|strings.TrimSuffix \".tpl\"}}"
+          gomplate -c registry=${HTDOCS_DIR}/registry.json
+            -c metrics=${HTDOCS_DIR}/metrics.json
+            -c official_metrics=${HTDOCS_DIR}/tier/official-metrics.json
+            -c schema=${HTDOCS_DIR}/registry.schema.json
+            --input-dir wiki
+            --output-map="${WIKI_WORK_DIR}/{{.in|strings.TrimSuffix \".tpl\"}}"
+
       - name: Push
         run: |
           cd ${WIKI_WORK_DIR}
