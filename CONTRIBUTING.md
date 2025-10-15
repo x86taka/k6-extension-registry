@@ -47,8 +47,13 @@ k6registry -q --lint registry.yaml
 
 ### public - Generate static documentation
 
+The static documentation is the [front page of the registry](registry.k6.io/index.html). It describes the registry API and the registry schema.
+
 > [!IMPORTANT]
-> The openapi definition references the registry.schema.json therefore you need a local copy from k6registry
+> Changes in the static documentation are published by opening a PR in this repository with the updates
+
+> [!IMPORTANT]
+> The openapi definition references the `registry.schema.json`. Use the `k6registry schema` command to get the same schema version than `k6registry` uses for generating the registry.
 
 ```bash
 k6registry schema > registry.schema.json
@@ -60,10 +65,7 @@ generate-schema-doc --config with_footer=false --config collapse_long_descriptio
 mv public/schema/registry.schema.html public/schema/index.html
 ```
 
-> [!IMPORTANT]
-> Changes in the static documentation are published by opening a PR in this repository with the updates
-
-### wiki - Generate API files
+### api - Generate API files
 
 The registry is exposed using and API defined in [openapi.yaml]. This API is served using static files generated from the registry using the [generate-api-files.sh] script. The script takes the registry.json generated from [registry.yaml] using `k6registry` as input to generate the json file to be returned by each endpoint. It also generates a metrics.txt file with metrics for the extensions by tier, grade, and issues found.
 
@@ -108,7 +110,14 @@ build/
     └── official-metrics.json
 ```
 
-### wiki - Generate wiki pages
+### wiki - Modify wiki pages
+
+The [wiki](https://github.com/grafana/k6-extension-registry/wiki) presents the content of the registry in a textual form for humans to view. It is built from the registry, the metrics, and the schema using templates found in the [wiki] directory.
+
+> [!IMPORTANT]
+> The content of the wiki is re-generated automatically when the registry changes.
+
+After modifying the template, you can re-generate the wiki locally using the following commands.
 
 ```bash
 export BASE_URL=https://registry.k6.io
