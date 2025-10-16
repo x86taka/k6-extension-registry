@@ -3,14 +3,11 @@ Objective and Key Results for **official k6 extensions** based on the contents o
 
 ## Objective
 
-Official extensions must meet all compliance requirements.
+Official extensions must pass all compliance checks.
 
 ## Key Results
 
-{{- $grade_a_count := index .official_metrics "grade_a_count" -}}
 {{- $extension_count := index .official_metrics "extension_count" -}}
-{{- $grade_a_pc := math.Round (mul (div $grade_a_count $extension_count) 100) -}}
-
 {{- $no_issues_count := 0 -}}
 {{- $issues := coll.Slice -}}
 {{- range $idx, $ext:= .registry -}}
@@ -26,39 +23,18 @@ Official extensions must meet all compliance requirements.
 {{- end -}}
 {{- $no_issues_pc := math.Round (mul (div $no_issues_count $extension_count) 100) }}
 
-### Grade: {{ $grade_a_pc }}%
-
-All official extensions should have a compliance grade of A.
-
-{{ if ne $grade_a_count $extension_count }}
-Grade | Count
-------|------
-{{ range $key, $value:= .official_metrics }}
-{{-  if and (strings.Contains "grade_" $key) (has $props $key) -}}
-{{-    ($key|strings.TrimSuffix "_count"|strings.TrimPrefix "grade_" |toUpper) }} | {{ $value }}
-{{ end -}}
-{{ end}}
-{{ end}}
-### No Issues: {{ $no_issues_pc }}%
-
-Official extensions should not have compliance issues.
+### Pass all checks: {{ $no_issues_count }} / {{ $extension_count }} ({{ $no_issues_pc }}%)
 
 {{ if ne $no_issues_pc 100.0 }}
-Has Issues | No Issues
------------|----------
-{{ sub $extension_count $no_issues_count }} | {{ $no_issues_count }}
-{{ end }}
 
-{{ if ne $no_issues_pc 100.0 }}
-## To-do's
-
-The following extensions have compliance issues. The goal is to fix these issues and empty the table.
+The following extensions have compliance issues.
 
 Name | Issues | Description
 -----|--------|------------
 {{ range $idx, $ext:= .registry -}}
-{{ if and (eq $ext.tier "official") (ne $ext.module "go.k6.io/k6") ($ext.compliance) (ne $ext.compliance.grade "A") -}}
-![grade {{$ext.compliance.grade}}]({{$.Env.BASE_URL}}/module/{{$ext.module}}/grade.svg) {{ if and $ext.repo $ext.repo.url }}[{{ $ext.repo.name }}]({{$ext.repo.url}}){{else}}{{ $ext.module }}{{end}} | {{if coll.Has $ext.compliance "issues"}}{{ range $idx, $issue := $ext.compliance.issues }}{{$issue}} {{end}} {{else}} 🎉 {{end}} | {{ $ext.description }}
+{{ if and (eq $ext.tier "official") (ne $ext.module "go.k6.io/k6") -}}
+{{ if coll.Has $ext.compliance "issues" }}
+{{ if and $ext.repo $ext.repo.url }}[{{ $ext.repo.name }}]({{$ext.repo.url}}){{else}}{{ $ext.module }}{{end}} | {{ range $idx, $issue := $ext.compliance.issues }}{{$issue}} {{end}} | {{ $ext.description }}
 {{ end -}}
 {{ end }}
 

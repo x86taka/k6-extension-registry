@@ -1,30 +1,5 @@
 Metrics made from the content of the k6 extension registry are listed here, broken down according to different aspects. The page is automatically updated when the registry changes.
 {{ $props := index .schema "$defs" "metrics" "properties" }}
-## Extensions by Grade
-
-Metrics by extension compliance grades. The grade for the fully compliant (without issue) extension is A.
-
-```mermaid
-pie showData 
-{{ range $key, $value:= .metrics }}
-  {{- if and (strings.Contains "grade_" $key) (has $props $key) -}}
-  {{- $name := strings.TrimSuffix "_count" (strings.TrimPrefix "grade_" $key) -}}
-  {{- if index $.metrics $key}}"{{strings.ToUpper $name}}" : {{index $.metrics $key}}{{"\n"}}{{end}}
-  {{- end -}}
-{{- end -}}
-```
-
-<div align="center">
-
-Metric | Description | Value
--------|-------|------------
-{{ range $key, $value:= .metrics }}
-{{-  if and (strings.Contains "_grade_" $key) (has $props $key) -}}
-{{-    $key }} | {{ strings.TrimSuffix "." (index $props $key "description") }} | {{ $value }}
-{{ end -}}
-{{ end}}
-
-</div>
 
 ## Extensions by Issue
 

@@ -10,9 +10,7 @@ info:
 
     Detailed information about response schemas can be found in the [schema documentation](https://registry.k6.io/schema). Schemas are defined in [registry.schema.json](https://registry.k6.io/registry.schema.json)
 
-    The source code of extensions is automatically **statically analyzed**. The result of the analysis is the **compliance level** of the best practices of Grafana k6 extensions (0-100%). Based on the compliance level, a **compliance grade** is also calculated (A-F). Based on the compliance grade, an SVG **compliance badge** is created for each extension. Example badge:
-
-    ![xk6-sql](https://registry.k6.io/module/github.com/grafana/xk6-sql/badge.svg)
+    The source code of extensions is automatically **statically analyzed** and a list of issues is generated.
 
     The k6 Extension **Catalog** is an **alternative representation** of the k6 Extension **Registry**. Most queries have an alternative counterpart that returns a catalog instead of a registry.
 
@@ -53,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "registry.schema.json#/$defs/registry"
+                $ref: "#/components/schemas/Registry"
   /catalog.json:
     get:
       tags:
@@ -67,7 +65,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "registry.schema.json#/$defs/catalog"
+                $ref: "#/components/schemas/Catalog"
   /metrics.json:
     get:
       tags:
@@ -81,7 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "registry.schema.json#/$defs/metrics"
+                $ref: "#/components/schemas/Metrics"
   /metrics.txt:
     get:
       tags:
@@ -109,21 +107,12 @@ paths:
                     # HELP registry_type_output_count Number of Output extension.
                     # TYPE registry_type_output_count counter
                     registry_type_output_count 16 1733941259568
-                    # HELP registry_grade_d_count Number of D-grade extensions.
-                    # TYPE registry_grade_d_count counter
-                    registry_grade_d_count 2 1733941259568
                     # HELP registry_issue_examples_count Number of extensions without examples directory.
                     # TYPE registry_issue_examples_count counter
                     registry_issue_examples_count 14 1733941259568
                     # HELP registry_tier_community_count Number of extension in the community' tier.
                     # TYPE registry_tier_community_count counter
                     registry_tier_community_count 57 1733941259568
-                    # HELP registry_grade_a_count Number of A-grade extensions.
-                    # TYPE registry_grade_a_count counter
-                    registry_grade_a_count 22 1733941259568
-                    # HELP registry_grade_c_count Number of C-grade extensions.
-                    # TYPE registry_grade_c_count counter
-                    registry_grade_c_count 44 1733941259568
                     # HELP registry_extension_count The total number of extensions.
                     # TYPE registry_extension_count counter
                     registry_extension_count 71 1733941259568
@@ -136,12 +125,6 @@ paths:
                     # HELP registry_issue_build_count Number of extensions not buildable with the latest k6 version.
                     # TYPE registry_issue_build_count counter
                     registry_issue_build_count 3 1733941259568
-                    # HELP registry_grade_b_count Number of B-grade extensions.
-                    # TYPE registry_grade_b_count counter
-                    registry_grade_b_count 2 1733941259568
-                    # HELP registry_grade_e_count Number of E-grade extensions.
-                    # TYPE registry_grade_e_count counter
-                    registry_grade_e_count 1 1733941259568
                     # HELP registry_cgo_count Number of extensions requiring cgo.
                     # TYPE registry_cgo_count counter
                     registry_cgo_count 1 1733941259568
@@ -166,51 +149,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "registry.schema.json#/$defs/extension"
+                $ref: "#/components/schemas/Extension"
         "404":
           description: module not found
-  /module/{module}/badge.svg:
-    get:
-      tags:
-        - module
-      summary: Download a badge
-      description: |
-        Download an extension's badge as an SVG image
 
-        Example:
-
-        ![xk6-sql](https://registry.k6.io/module/github.com/grafana/xk6-sql/badge.svg)
-      operationId: getBadge
-      parameters:
-        - $ref: "#/components/parameters/module"
-      produces:
-        - image/svg+xml
-      responses:
-        "200":
-          description: successful operation
-        "404":
-          description: module not found
-  /module/{module}/grade.svg:
-    get:
-      tags:
-        - module
-      summary: Download a grade badge
-      description: |
-        Download an extension's grade badge as an SVG image
-
-        Example:
-
-        ![xk6-sql](https://registry.k6.io/module/github.com/grafana/xk6-sql/grade.svg)
-      operationId: getGradeBadge
-      parameters:
-        - $ref: "#/components/parameters/module"
-      produces:
-        - image/svg+xml
-      responses:
-        "200":
-          description: successful operation
-        "404":
-          description: module not found
   /tier/{tier}.json:
     get:
       tags:
@@ -226,7 +168,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "registry.schema.json#/$defs/registry"
+                $ref: "#/components/schemas/Registry"
         "404":
           description: tier not found
   /tier/{tier}-catalog.json:
@@ -244,7 +186,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "registry.schema.json#/$defs/catalog"
+                $ref: "#/components/schemas/Catalog"
         "404":
           description: tier not found
   /tier/{tier}-metrics.json:
@@ -260,27 +202,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "registry.schema.json#/$defs/metrics"
-  /grade/{grade}.json:
-    get:
-      tags:
-        - subset
-      summary: Subset by grade
-      description: Querying the subset of the registry containing the extensions with the compliance grade specified in the parameter
-      operationId: subsetByGrade
-      parameters:
-        - $ref: "#/components/parameters/grade"
-      responses:
-        "200":
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "registry.schema.json#/$defs/registry"
-        "404":
-          description: grade not found
+                $ref: "#/components/schemas/Metrics"
 
 components:
+  schemas:
+    Registry:
+      $ref: "./registry.schema.json#/$defs/registry"
+    Extension:
+      $ref: "./registry.schema.json#/$defs/extension"
+    Catalog:
+      description: |
+        k6 Extension Catalog.
+
+        The k6 extension catalog is an alternative representation of the k6 extension registry.
+        The catalog stores the extension data in an associative array (object),
+        where the key is the import path for JavaScript extensions, and the output name for output extensions.
+        This data structure is optimized to resolve extensions as dependencies.
+      type: object
+      additionalProperties:
+        $ref: "./registry.schema.json#/$defs/extension"
+    Metrics:
+      $ref: "./registry.schema.json#/$defs/metrics"
+    Tier:
+      $ref: "./registry.schema.json#/$defs/tier"
+
   parameters:
     module:
       in: path
@@ -294,18 +239,7 @@ components:
           value: "github.com/grafana/xk6-sql"
       schema:
         type: string
-    grade:
-      in: path
-      name: grade
-      required: true
-      description: grade to be queried
-      examples:
-        A:
-          value: "A"
-        C:
-          value: "C"
-      schema:
-        $ref: "registry.schema.json#/$defs/grade"
+
     tier:
       in: path
       name: tier
@@ -317,5 +251,5 @@ components:
         community:
           value: "community"
       schema:
-        $ref: "registry.schema.json#/$defs/tier"
+        $ref: "#/components/schemas/Tier"
 

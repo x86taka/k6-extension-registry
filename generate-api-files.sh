@@ -11,27 +11,8 @@ set -euo pipefail
 #
 # Extensions are filtered by:
 # - Tier (official, community) 
-# - Grade (A, B, C, D, E, F)
 # - Module: generates per-module extension metadata files
 
-
-# Function to generate k6 registry grade badge using a template for the svg file
-generate_k6_badge() {
-    local grade="$1"
-    local output_file="$2"
-        
-    # Convert to uppercase and validate
-    grade=$(echo "$grade" | tr '[:lower:]' '[:upper:]')
-    if [[ ! "$grade" =~ ^[A-F]$ ]]; then
-        echo "Error: Invalid grade '$grade'. Must be A-F." >&2
-        return 1
-    fi
-    
-    # Generate SVG using gomplate template with environment variable
-    GRADE="$grade" gomplate \
-        --file "${TEMPLATES_DIR}/grade-badge.svg.tpl" \
-        --out "$output_file"
-}
 
 # Function to generate a file for each extension
 # The module name is used as path for the file
@@ -48,36 +29,29 @@ generate_module_files() {
             
             # Write extension.json
             echo "$extension_json" | jq . > "${module_dir}/extension.json"
-            
-            # Generate grade badge if module has compliance grade
-            local grade
-            grade=$(echo "$extension_json" | jq -r '.compliance.grade // empty')
-            if [[ -n "$grade" && "$grade" != "null" ]]; then
-                generate_k6_badge "$grade" "${module_dir}/grade.svg"
-            fi
         fi
     done
 }
 
 # Generate metrics for a registry
 # Generates the total number of extensions and the number of extensions for each filter
-# Accepted filters are tier, grade, and issue.
+# Accepted filters are 'tier' and 'issue'.
 # 
 # Parameters
 # $1 input registry file
 # $2 output metrics file in json format
 # $3 output metrics file in prometheus format
 # $4 timestamp for metrics
-# $5 filters. Defaults to all (tier,grade,issue)
+# $5 filters. Defaults to all (tier,issue)
 function generate_metrics() {
     local registry=$1
     local json_file=$2
     local prometheus_file=$3
     local timestamp=$4
-    local filters=${5:-"tier,grade,issue"}
+    local filters=${5:-"tier,issue"}
 
     jq --arg filters "$filters" '
-        # Takes field name (e.g., "tier", "grade", "issue") and field value (e.g., "official", "A", "deprecated")
+        # Takes field name (e.g., "tier", "issue") and field value (e.g., "official", "deprecated")
         # Returns formatted metric name like "tier_official_count"
         def metric_name(field_name; field_value):
           [field_name, (field_value | ascii_downcase), "count"] | join("_");
@@ -98,10 +72,6 @@ function generate_metrics() {
         # add combines the count objects
         (if ($filters | contains("tier")) then
           (group_by(.tier) | map(create_metric("tier"; .[0].tier; length)) | add)
-        else {} end) +
-
-        (if ($filters | contains("grade")) then
-          ([.[] | select(.compliance.grade)] | group_by(.compliance.grade) | map(create_metric("grade"; .[0].compliance.grade; length)) | add)
         else {} end) +
 
         (if ($filters | contains("issue")) then
@@ -162,7 +132,6 @@ function usage() {
 }
 
 # Parameters
-GRADES=("A" "B" "C" "D" "E" "F")
 TIERS=("official" "community")
 
 # default log command to noop
@@ -225,9 +194,8 @@ if [[ ! -f "$REGISTRY_FILE" ]]; then
 fi
 
 # Create api directory structure
-rm -rf  "${BUILD_DIR}/"{tier,grade,module}
+rm -rf  "${BUILD_DIR}/"{tier,module}
 mkdir -p "${BUILD_DIR}/tier"
-mkdir -p "${BUILD_DIR}/grade"
 mkdir -p "${BUILD_DIR}/module"
 
 $LOG "Starting generation of registry API files..."
@@ -257,18 +225,7 @@ for tier in "${TIERS[@]}"; do
     generate_catalog "${BUILD_DIR}/tier/${tier}.json" "${BUILD_DIR}/tier/${tier}-catalog.json"
 
     # Generate metrics for tier
-    generate_metrics "${BUILD_DIR}/tier/${tier}.json" "${BUILD_DIR}/tier/${tier}-metrics.json" "${BUILD_DIR}/tier/${tier}-metrics.txt" "${TIMESTAMP}" "grade,issue"
-done
-
-# Generate grade-based files
-for grade in "${GRADES[@]}"; do
-    $LOG "Generating grade files for: ${grade}..."
-    
-    # Filter registry by grade using jq (handle missing compliance fields)
-    jq --arg grade "$grade" '[.[] | select(.compliance and .compliance.grade == $grade)]' "${REGISTRY_FILE}" > "${BUILD_DIR}/grade/${grade}.json"
-    
-    # Generate grade catalog file
-    generate_catalog  "${BUILD_DIR}/grade/${grade}.json" "${BUILD_DIR}/grade/${grade}-catalog.json"
+    generate_metrics "${BUILD_DIR}/tier/${tier}.json" "${BUILD_DIR}/tier/${tier}-metrics.json" "${BUILD_DIR}/tier/${tier}-metrics.txt" "${TIMESTAMP}" "issue"
 done
 
 $LOG "Generating metrics"
