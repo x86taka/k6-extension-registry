@@ -39,7 +39,7 @@ The following extensions have compliance issues.
 
 Name | Description | Issues
 -----|-------------|--------
-{{- range $idx, $ext:= .registry -}}
+{{- range $idx, $ext:= coll.Sort "module" .registry -}}
 {{ if and (eq $ext.tier "official") (ne $ext.module "go.k6.io/k6") -}}
 {{- if coll.Has $ext "compliance" -}}
 {{-   $all_issues := coll.Slice -}}
@@ -52,7 +52,7 @@ Name | Description | Issues
 {{-   end -}}
 {{-   $all_issues = $all_issues | uniq -}}
 {{-   if $all_issues }}
-{{ if and $ext.repo $ext.repo.url }}[{{ $ext.repo.name }}]({{$ext.repo.url}}){{else}}{{ $ext.module }}{{end}} | {{ $ext.description }} | {{ range $i, $issue := $all_issues }}{{$issue}} {{end }}
+{{ if and $ext.repo $ext.repo.url }}[{{ $ext.repo.owner }}/{{ $ext.repo.name }}]({{$ext.repo.url}}){{else}}{{ $ext.module }}{{end}} | {{ $ext.description }} | {{ range $i, $issue := $all_issues }}{{$issue}} {{end }}
 {{-   end -}}
 {{- end -}}
 {{ end -}}
