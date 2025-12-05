@@ -199,4 +199,4 @@
   imports:
     - k6/x/msgpack
   versions:
-    - "v0.0.1"
+    - "v0.0.3"
