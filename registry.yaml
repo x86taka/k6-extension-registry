@@ -26,6 +26,7 @@
     - k6/x/dns
   versions:
     - "v1.0.0"
+    - "v1.0.1"
 
 - module: github.com/grafana/xk6-faker
   description: Generate fake data in your tests
