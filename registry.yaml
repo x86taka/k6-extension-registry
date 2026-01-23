@@ -48,6 +48,7 @@
     - k6/x/icmp
   versions:
     - "v0.1.0"
+    - "v0.2.0"
 
 - module: github.com/grafana/xk6-mqtt
   description: MQTT protocol support for k6
@@ -56,6 +57,7 @@
     - k6/x/mqtt
   versions:
     - "v0.1.1"
+    - "v0.2.0"
 
 - module: github.com/grafana/xk6-redis
   description: Extension for Redis database
@@ -194,7 +196,7 @@
   versions:
     - "v0.1.10"
     - "v0.1.11"
-    
+
 - module: github.com/grafana/xk6-tls
   description: TLS certificates validation and inspection
   tier: community
